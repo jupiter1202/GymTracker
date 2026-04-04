@@ -47,11 +47,14 @@ Plans:
   2. User can search exercises by name and results update as they type
   3. User can filter exercises by muscle group and see only matching exercises
   4. User can create a custom exercise with a name, primary muscle group, and equipment type, and it appears in the library alongside pre-seeded exercises
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01-PLAN.md — Test scaffolds: ExerciseDaoTest and ExerciseRepositoryTest (Wave 0 stubs)
+- [ ] 02-02-PLAN.md — Data layer: ExerciseDao, ExerciseRepository, GymTrackerDatabase, AppModule, seed database (human-action)
+- [ ] 02-03-PLAN.md — ExerciseViewModel: combine() dual-StateFlow search + filter pattern
+- [ ] 02-04-PLAN.md — ExercisesScreen UI: search bar, filter chips, grouped list, create/edit bottom sheet
+- [ ] 02-05-PLAN.md — Human verification: end-to-end exercise library smoke test
 
 ### Phase 3: Workout Plans
 **Goal**: Users can build their own workout routines or start from proven pre-built programs, giving them unlimited plans for free
@@ -122,7 +125,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-04-04 |
-| 2. Exercise Library | 0/? | Not started | - |
+| 2. Exercise Library | 0/5 | Not started | - |
 | 3. Workout Plans | 0/? | Not started | - |
 | 4. Workout Logging | 0/? | Not started | - |
 | 5. History and Progress | 0/? | Not started | - |
