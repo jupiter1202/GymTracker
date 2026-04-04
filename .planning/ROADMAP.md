@@ -74,6 +74,7 @@ Plans:
 - [x] 03-04-PLAN.md — PlansScreen UI: two-section layout, FAB, plan cards, template cards, long-press menu, navigation routes
 - [x] 03-05-PLAN.md — PlanDetailScreen: drag-and-drop reorder, swipe-to-delete, exercise picker, target sheet
 - [x] 03-06-PLAN.md — TemplatePreviewScreen: exercise list preview, "Use this program" import flow
+- [x] 03-06-GAP-01-PLAN.md — Fix template exercise matching with fuzzy algorithm and updated template names
 - [ ] 03-07-PLAN.md — Human verification: end-to-end Plans smoke test (7 scenarios)
 
 ### Phase 4: Workout Logging
@@ -131,7 +132,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-04-04 |
 | 2. Exercise Library | 4/5 | In Progress|  |
-| 3. Workout Plans | 8/10 | In Progress|  |
+| 3. Workout Plans | 8/8 | In Progress|  |
 | 4. Workout Logging | 0/? | Not started | - |
 | 5. History and Progress | 0/? | Not started | - |
 | 6. Data Export | 0/? | Not started | - |
