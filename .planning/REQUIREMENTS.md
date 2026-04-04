@@ -15,9 +15,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Workout Plans
 
-- [ ] **PLAN-01**: User can create custom workout plans with unlimited routines
-- [ ] **PLAN-02**: App includes pre-built program templates (PPL, 5x5, nSuns, GZCLP) available for free
-- [ ] **PLAN-03**: User can edit existing workout plans (add/remove/reorder exercises)
+- [x] **PLAN-01**: User can create custom workout plans with unlimited routines
+- [x] **PLAN-02**: App includes pre-built program templates (PPL, 5x5, nSuns, GZCLP) available for free
+- [x] **PLAN-03**: User can edit existing workout plans (add/remove/reorder exercises)
 
 ### Workout Logging
 
@@ -90,9 +90,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EXER-01 | Phase 2: Exercise Library | Complete |
 | EXER-02 | Phase 2: Exercise Library | Complete |
 | EXER-03 | Phase 2: Exercise Library | Complete |
-| PLAN-01 | Phase 3: Workout Plans | Pending |
-| PLAN-02 | Phase 3: Workout Plans | Pending |
-| PLAN-03 | Phase 3: Workout Plans | Pending |
+| PLAN-01 | Phase 3: Workout Plans | Complete |
+| PLAN-02 | Phase 3: Workout Plans | Complete |
+| PLAN-03 | Phase 3: Workout Plans | Complete |
 | LOG-01 | Phase 4: Workout Logging | Pending |
 | LOG-03 | Phase 4: Workout Logging | Pending |
 | LOG-04 | Phase 4: Workout Logging | Pending |
