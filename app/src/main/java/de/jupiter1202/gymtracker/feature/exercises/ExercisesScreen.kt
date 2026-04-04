@@ -1,43 +1,63 @@
 package de.jupiter1202.gymtracker.feature.exercises
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.jupiter1202.gymtracker.core.database.entities.Exercise
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 val MUSCLE_GROUPS = listOf(
@@ -50,6 +70,7 @@ val EQUIPMENT_TYPES = listOf(
     "Kettlebell", "Resistance Band", "Other"
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExercisesScreen() {
     val viewModel: ExerciseViewModel = koinViewModel()
@@ -64,6 +85,9 @@ fun ExercisesScreen() {
     var exerciseToEdit by remember { mutableStateOf<Exercise?>(null) }
     var showDeleteBlockedDialog by remember { mutableStateOf(false) }
     var blockedSessionCount by remember { mutableStateOf(0) }
+
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(deleteResult) {
         when (val result = deleteResult) {
@@ -166,18 +190,27 @@ fun ExercisesScreen() {
             )
         }
 
-        // Bottom sheet will be added in Task 2
+        // Bottom sheet for create / edit
         if (showBottomSheet) {
-            ExerciseFormSheet(
-                exercise = exerciseToEdit,
-                showBottomSheet = showBottomSheet,
-                onDismiss = { showBottomSheet = false },
-                onSave = { name, muscle, equipment ->
-                    viewModel.saveExercise(name, muscle, equipment, exerciseToEdit)
-                    showBottomSheet = false
-                },
-                onCancel = { showBottomSheet = false }
-            )
+            ModalBottomSheet(
+                onDismissRequest = { showBottomSheet = false },
+                sheetState = sheetState
+            ) {
+                ExerciseFormSheet(
+                    exercise = exerciseToEdit,
+                    onSave = { name, muscle, equipment ->
+                        scope.launch {
+                            viewModel.saveExercise(name, muscle, equipment, exerciseToEdit)
+                            sheetState.hide()
+                        }.invokeOnCompletion { showBottomSheet = false }
+                    },
+                    onCancel = {
+                        scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            showBottomSheet = false
+                        }
+                    }
+                )
+            }
         }
     }
 }
@@ -251,7 +284,7 @@ private fun ExerciseRow(
         }
 
         if (exercise.isCustom) {
-            androidx.compose.material3.SuggestionChip(
+            SuggestionChip(
                 onClick = {},
                 label = { Text("Custom") }
             )
@@ -294,13 +327,146 @@ private fun MuscleGroupHeader(muscleGroup: String) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExerciseFormSheet(
     exercise: Exercise?,
-    showBottomSheet: Boolean,
-    onDismiss: () -> Unit,
     onSave: (name: String, muscle: String, equipment: String) -> Unit,
     onCancel: () -> Unit
 ) {
-    // Placeholder — full implementation in Task 2
+    var name by remember { mutableStateOf(exercise?.name ?: "") }
+    var selectedMuscle by remember { mutableStateOf(exercise?.primaryMuscleGroup ?: MUSCLE_GROUPS[0]) }
+    var selectedEquipment by remember { mutableStateOf(exercise?.equipmentType ?: EQUIPMENT_TYPES[0]) }
+    var nameError by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        // Drag handle
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(32.dp, 4.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+                        shape = RoundedCornerShape(2.dp)
+                    )
+            )
+        }
+
+        // Title
+        Text(
+            text = if (exercise != null) "Edit Exercise" else "New Exercise",
+            style = MaterialTheme.typography.titleLarge
+        )
+
+        // Name field
+        OutlinedTextField(
+            value = name,
+            onValueChange = {
+                name = it
+                nameError = false
+            },
+            label = { Text("Exercise name") },
+            isError = nameError,
+            supportingText = if (nameError) {
+                { Text("Name is required") }
+            } else null,
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        // Muscle group dropdown
+        ExposedDropdownField(
+            label = "Primary Muscle Group",
+            selectedItem = selectedMuscle,
+            items = MUSCLE_GROUPS,
+            onItemSelected = { selectedMuscle = it }
+        )
+
+        // Equipment type dropdown
+        ExposedDropdownField(
+            label = "Equipment Type",
+            selectedItem = selectedEquipment,
+            items = EQUIPMENT_TYPES,
+            onItemSelected = { selectedEquipment = it }
+        )
+
+        // Footer buttons
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            OutlinedButton(
+                onClick = onCancel,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Cancel")
+            }
+            Button(
+                onClick = {
+                    if (name.isBlank()) {
+                        nameError = true
+                    } else {
+                        onSave(name.trim(), selectedMuscle, selectedEquipment)
+                    }
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Save")
+            }
+        }
+
+        // IME spacer for keyboard
+        Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.ime))
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ExposedDropdownField(
+    label: String,
+    selectedItem: String,
+    items: List<String>,
+    onItemSelected: (String) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it },
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        OutlinedTextField(
+            value = selectedItem,
+            onValueChange = {},
+            readOnly = true,
+            label = { Text(label) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier
+                .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                .fillMaxWidth()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            items.forEach { item ->
+                DropdownMenuItem(
+                    text = { Text(item) },
+                    onClick = {
+                        onItemSelected(item)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+            }
+        }
+    }
 }
