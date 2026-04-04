@@ -2,6 +2,7 @@ package de.jupiter1202.gymtracker.feature.plans
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -183,7 +185,7 @@ private fun PlanExerciseList(
                 state = reorderState,
                 key = item.planExercise.id
             ) { isDragging ->
-                ExerciseRowWithSwipe(
+                ExerciseRowWithDelete(
                     item = item,
                     onExerciseClick = { onExerciseClick(item) },
                     onDeleteExercise = { onDeleteExercise(item) },
@@ -205,55 +207,36 @@ private fun PlanExerciseList(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ExerciseRowWithSwipe(
+private fun ExerciseRowWithDelete(
     item: PlanExerciseWithExercise,
     onExerciseClick: () -> Unit,
     onDeleteExercise: () -> Unit,
     isDragging: Boolean
 ) {
-    val dismissState = rememberSwipeToDismissBoxState(
-        confirmValueChange = { value ->
-            if (value == SwipeToDismissBoxValue.EndToStart) {
-                onDeleteExercise()
-                true
-            } else false
-        }
-    )
+    var showDeleteConfirm by remember { mutableStateOf(false) }
     
-    SwipeToDismissBox(
-        state = dismissState,
-        backgroundContent = {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.error)
-                    .padding(16.dp),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                Icon(
-                    Icons.Default.Delete,
-                    contentDescription = "Delete",
-                    tint = MaterialTheme.colorScheme.onError
-                )
+    if (showDeleteConfirm) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirm = false },
+            title = { Text("Delete exercise?") },
+            text = { Text("Are you sure you want to remove ${item.exercise.name}?") },
+            dismissButton = {
+                TextButton(onClick = { showDeleteConfirm = false }) {
+                    Text("Cancel")
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    onDeleteExercise()
+                    showDeleteConfirm = false
+                }) {
+                    Text("Delete")
+                }
             }
-        }
-    ) {
-        ExerciseRow(
-            item = item,
-            onExerciseClick = onExerciseClick,
-            isDragging = isDragging
         )
     }
-}
-
-@Composable
-private fun ExerciseRow(
-    item: PlanExerciseWithExercise,
-    onExerciseClick: () -> Unit,
-    isDragging: Boolean
-) {
+    
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -296,6 +279,15 @@ private fun ExerciseRow(
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(end = 8.dp)
         )
+        
+        // Delete button
+        IconButton(onClick = { showDeleteConfirm = true }) {
+            Icon(
+                Icons.Default.Delete,
+                contentDescription = "Delete exercise",
+                tint = MaterialTheme.colorScheme.error
+            )
+        }
     }
 }
 
