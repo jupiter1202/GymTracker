@@ -18,6 +18,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -176,7 +178,10 @@ private fun PlanExerciseList(
             key = { index -> localList[index].planExercise.id }
         ) { index ->
             val item = localList[index]
-            ReorderableItem(reorderState, key = item.planExercise.id) { isDragging ->
+            ReorderableItem(
+                state = reorderState,
+                key = item.planExercise.id
+            ) { isDragging ->
                 ExerciseRowWithSwipe(
                     item = item,
                     onExerciseClick = { onExerciseClick(item) },
@@ -257,13 +262,15 @@ private fun ExerciseRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Drag handle indicator
+        // Drag handle with hover cursor
         Box(
-            modifier = Modifier.size(40.dp),
+            modifier = Modifier
+                .size(40.dp)
+                .pointerHoverIcon(PointerIcon.Hand, overrideDescendants = true),
             contentAlignment = Alignment.Center
         ) {
             Text(
-                "⋮⋮",
+                "≡",
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
