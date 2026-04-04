@@ -4,13 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import de.jupiter1202.gymtracker.navigation.AppNavHost
+import de.jupiter1202.gymtracker.navigation.BottomNavDestination
 import de.jupiter1202.gymtracker.ui.theme.GymTrackerTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,29 +24,35 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GymTrackerTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                val navController = rememberNavController()
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+
+                Scaffold(
+                    bottomBar = {
+                        NavigationBar {
+                            BottomNavDestination.entries.forEach { dest ->
+                                NavigationBarItem(
+                                    selected = currentRoute == dest.route,
+                                    onClick = {
+                                        navController.navigate(dest.route) {
+                                            popUpTo(navController.graph.startDestinationId) {
+                                                saveState = true
+                                            }
+                                            launchSingleTop = true
+                                            restoreState = true
+                                        }
+                                    },
+                                    icon = { Icon(dest.icon, contentDescription = dest.label) },
+                                    label = { Text(dest.label) }
+                                )
+                            }
+                        }
+                    }
+                ) { innerPadding ->
+                    AppNavHost(navController, Modifier.padding(innerPadding))
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    GymTrackerTheme {
-        Greeting("Android")
     }
 }
