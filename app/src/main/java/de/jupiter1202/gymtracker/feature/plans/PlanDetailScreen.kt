@@ -240,7 +240,6 @@ private fun ExerciseRowWithDelete(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onExerciseClick() }
             .background(if (isDragging) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface)
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -261,7 +260,9 @@ private fun ExerciseRowWithDelete(
         }
         
         // Exercise info
-        Column(modifier = Modifier.weight(1f)) {
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
             Text(
                 text = item.exercise.name,
                 style = MaterialTheme.typography.bodyLarge
@@ -270,6 +271,15 @@ private fun ExerciseRowWithDelete(
                 text = item.exercise.primaryMuscleGroup,
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        
+        // Edit button (separate, non-draggable)
+        IconButton(onClick = { onExerciseClick() }) {
+            Icon(
+                Icons.Default.Edit,
+                contentDescription = "Edit exercise targets",
+                tint = MaterialTheme.colorScheme.primary
             )
         }
         
