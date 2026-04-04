@@ -1,10 +1,6 @@
 package de.jupiter1202.gymtracker.navigation
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -16,6 +12,7 @@ import de.jupiter1202.gymtracker.feature.exercises.ExercisesScreen
 import de.jupiter1202.gymtracker.feature.history.HistoryScreen
 import de.jupiter1202.gymtracker.feature.plans.PlansScreen
 import de.jupiter1202.gymtracker.feature.plans.PlanDetailScreen
+import de.jupiter1202.gymtracker.feature.plans.TemplatePreviewScreen
 import de.jupiter1202.gymtracker.feature.settings.SettingsScreen
 
 @Composable
@@ -48,15 +45,21 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
 
-        // Template preview route (placeholder — replaced in 03-06)
+        // Template preview route
         composable(
             route = "template_preview/{templateId}",
             arguments = listOf(navArgument("templateId") { type = NavType.StringType })
         ) { backStackEntry ->
             val templateId = backStackEntry.arguments?.getString("templateId") ?: return@composable
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Template Preview — $templateId")
-            }
+            TemplatePreviewScreen(
+                templateId = templateId,
+                onNavigateBack = { navController.popBackStack() },
+                onImported = { planId ->
+                    // Pop template_preview off back stack, then navigate to plan detail
+                    navController.popBackStack()
+                    navController.navigate("plan_detail/$planId")
+                }
+            )
         }
     }
 }
