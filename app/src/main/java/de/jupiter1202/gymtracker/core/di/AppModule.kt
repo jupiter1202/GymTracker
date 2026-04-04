@@ -2,6 +2,7 @@ package de.jupiter1202.gymtracker.core.di
 
 import androidx.room.Room
 import de.jupiter1202.gymtracker.core.database.GymTrackerDatabase
+import de.jupiter1202.gymtracker.feature.exercises.ExerciseRepository
 import de.jupiter1202.gymtracker.feature.settings.SettingsRepository
 import de.jupiter1202.gymtracker.feature.settings.SettingsViewModel
 import org.koin.android.ext.koin.androidContext
@@ -14,9 +15,13 @@ val appModule = module {
             androidContext(),
             GymTrackerDatabase::class.java,
             "gymtracker.db"
-        ).build()
+        )
+            .createFromAsset("gymtracker_seed.db")
+            .build()
     }
     single { androidContext().dataStore }
+    single { get<GymTrackerDatabase>().exerciseDao() }
+    single { ExerciseRepository(get()) }
     single { SettingsRepository(get()) }
     viewModel { SettingsViewModel(get()) }
 }

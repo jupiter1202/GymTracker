@@ -1,5 +1,6 @@
 package de.jupiter1202.gymtracker.feature.exercises
 
+import de.jupiter1202.gymtracker.core.database.dao.ExerciseDao
 import de.jupiter1202.gymtracker.core.database.entities.Exercise
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -8,46 +9,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 
-// ---------------------------------------------------------------------------
-// Wave 0 stubs — replaced by real implementations in Wave 2 (02-02-PLAN.md)
-// ---------------------------------------------------------------------------
-
-/** Placeholder DAO interface — real implementation lives in Wave 2. */
-interface ExerciseDao {
-    fun searchExercises(query: String, muscleGroup: String?): Flow<List<Exercise>>
-    suspend fun insert(exercise: Exercise): Long
-    suspend fun update(exercise: Exercise)
-    suspend fun delete(exercise: Exercise)
-    suspend fun countUsagesInSessions(exerciseId: Long): Int
-}
-
-/** Placeholder result type — real sealed class lives in Wave 2. */
-sealed class DeleteResult {
-    object Deleted : DeleteResult()
-    data class Blocked(val sessionCount: Int) : DeleteResult()
-}
-
-/** Placeholder repository — real implementation lives in Wave 2. */
-class ExerciseRepository(private val dao: ExerciseDao) {
-    suspend fun deleteExercise(exercise: Exercise): DeleteResult {
-        val count = dao.countUsagesInSessions(exercise.id)
-        return if (count == 0) {
-            dao.delete(exercise)
-            DeleteResult.Deleted
-        } else {
-            DeleteResult.Blocked(sessionCount = count)
-        }
-    }
-}
-
-// ---------------------------------------------------------------------------
-// Tests
-// ---------------------------------------------------------------------------
-
-@Ignore("Wave 0 scaffold — ExerciseRepository not yet implemented")
 class ExerciseRepositoryTest {
 
     private lateinit var fakeDao: FakeExerciseDao

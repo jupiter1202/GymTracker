@@ -4,8 +4,8 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import de.jupiter1202.gymtracker.core.database.GymTrackerDatabase
+import de.jupiter1202.gymtracker.core.database.dao.ExerciseDao
 import de.jupiter1202.gymtracker.core.database.entities.Exercise
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -16,30 +16,10 @@ import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 
-// ---------------------------------------------------------------------------
-// Wave 0 stub — removed and replaced by the real @Dao in Wave 2 (02-02-PLAN.md)
-// The real ExerciseDao will be an @Dao-annotated interface in the feature package.
-// ---------------------------------------------------------------------------
-
-/** Placeholder DAO interface — real @Dao annotation and Room implementation added in Wave 2. */
-interface ExerciseDao {
-    fun searchExercises(query: String, muscleGroup: String?): Flow<List<Exercise>>
-    suspend fun insert(exercise: Exercise): Long
-    suspend fun update(exercise: Exercise)
-    suspend fun delete(exercise: Exercise)
-    suspend fun countUsagesInSessions(exerciseId: Long): Int
-}
-
-// ---------------------------------------------------------------------------
-// Tests
-// ---------------------------------------------------------------------------
-
-@Ignore("Wave 0 scaffold — ExerciseDao not yet implemented")
 @RunWith(AndroidJUnit4::class)
 class ExerciseDaoTest {
 
     private lateinit var db: GymTrackerDatabase
-    // dao assigned from db.exerciseDao() once GymTrackerDatabase declares the abstract fun in Wave 2
     private lateinit var dao: ExerciseDao
 
     @Before
@@ -48,8 +28,7 @@ class ExerciseDaoTest {
             ApplicationProvider.getApplicationContext(),
             GymTrackerDatabase::class.java
         ).build()
-        // Wave 2: replace with dao = db.exerciseDao()
-        dao = TODO("db.exerciseDao() added in Wave 2")
+        dao = db.exerciseDao()
     }
 
     @After

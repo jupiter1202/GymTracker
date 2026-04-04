@@ -2,6 +2,7 @@ package de.jupiter1202.gymtracker.core.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import de.jupiter1202.gymtracker.core.database.dao.ExerciseDao
 import de.jupiter1202.gymtracker.core.database.entities.BodyMeasurement
 import de.jupiter1202.gymtracker.core.database.entities.Exercise
 import de.jupiter1202.gymtracker.core.database.entities.PlanExercise
@@ -21,5 +22,6 @@ import de.jupiter1202.gymtracker.core.database.entities.WorkoutSet
     version = 1,
     exportSchema = true
 )
-abstract class GymTrackerDatabase : RoomDatabase()
-// DAOs will be declared here as abstract functions in Phases 2-4
+abstract class GymTrackerDatabase : RoomDatabase() {
+    abstract fun exerciseDao(): ExerciseDao
+}
