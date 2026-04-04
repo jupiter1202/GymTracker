@@ -103,7 +103,14 @@ class WorkoutPlanRepository(
         var orderIndex = 0
         for (day in program.days) {
             for (templateExercise in day.exercises) {
-                val exerciseId = exerciseLookup[templateExercise.exerciseName.lowercase()]
+                // Try exact match first (case-insensitive)
+                var exerciseId = exerciseLookup[templateExercise.exerciseName.lowercase()]
+                
+                // If no exact match, try fuzzy matching
+                if (exerciseId == null) {
+                    exerciseId = findFuzzyMatch(templateExercise.exerciseName, exerciseLookup)
+                }
+                
                 if (exerciseId != null) {
                     planExerciseDao.insert(
                         PlanExercise(
@@ -119,5 +126,41 @@ class WorkoutPlanRepository(
             }
         }
         return planId
+    }
+    
+    private fun findFuzzyMatch(templateExerciseName: String, exerciseLookup: Map<String, Long>): Long? {
+        val templateLower = templateExerciseName.lowercase()
+        val templateWords = templateLower.split(" ").filter { it.isNotEmpty() }
+        
+        // Find best match based on word overlap and position
+        var bestMatch: Pair<String, Long>? = null
+        var bestScore = 0
+        
+        for ((dbExerciseName, exerciseId) in exerciseLookup) {
+            val dbWords = dbExerciseName.split(" ").filter { it.isNotEmpty() }
+            
+            // Count matching words (more matches = higher score)
+            var matchScore = 0
+            for (templateWord in templateWords) {
+                for (dbWord in dbWords) {
+                    if (dbWord.startsWith(templateWord) || templateWord.startsWith(dbWord)) {
+                        matchScore += 2
+                    } else if (dbWord.contains(templateWord) || templateWord.contains(dbWord)) {
+                        matchScore += 1
+                    }
+                }
+            }
+            
+            // Penalize if lengths differ significantly
+            val lengthDiff = kotlin.math.abs(templateLower.length - dbExerciseName.length)
+            matchScore -= lengthDiff / 5
+            
+            if (matchScore > bestScore && matchScore > 0) {
+                bestScore = matchScore
+                bestMatch = dbExerciseName to exerciseId
+            }
+        }
+        
+        return bestMatch?.second
     }
 }
