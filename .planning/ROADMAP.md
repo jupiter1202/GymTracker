@@ -121,7 +121,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 1/4 | In Progress|  |
+| 1. Foundation | 2/4 | In Progress|  |
 | 2. Exercise Library | 0/? | Not started | - |
 | 3. Workout Plans | 0/? | Not started | - |
 | 4. Workout Logging | 0/? | Not started | - |
