@@ -85,31 +85,31 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| EXER-01 | — | Pending |
-| EXER-02 | — | Pending |
-| EXER-03 | — | Pending |
-| PLAN-01 | — | Pending |
-| PLAN-02 | — | Pending |
-| PLAN-03 | — | Pending |
-| LOG-01 | — | Pending |
-| LOG-02 | — | Pending |
-| LOG-03 | — | Pending |
-| LOG-04 | — | Pending |
-| LOG-05 | — | Pending |
-| HIST-01 | — | Pending |
-| HIST-02 | — | Pending |
-| PROG-01 | — | Pending |
-| PROG-02 | — | Pending |
-| PROG-03 | — | Pending |
-| PROG-04 | — | Pending |
-| DATA-01 | — | Pending |
-| GEN-01 | — | Pending |
+| GEN-01 | Phase 1: Foundation | Pending |
+| LOG-02 | Phase 1: Foundation | Pending |
+| EXER-01 | Phase 2: Exercise Library | Pending |
+| EXER-02 | Phase 2: Exercise Library | Pending |
+| EXER-03 | Phase 2: Exercise Library | Pending |
+| PLAN-01 | Phase 3: Workout Plans | Pending |
+| PLAN-02 | Phase 3: Workout Plans | Pending |
+| PLAN-03 | Phase 3: Workout Plans | Pending |
+| LOG-01 | Phase 4: Workout Logging | Pending |
+| LOG-03 | Phase 4: Workout Logging | Pending |
+| LOG-04 | Phase 4: Workout Logging | Pending |
+| LOG-05 | Phase 4: Workout Logging | Pending |
+| HIST-01 | Phase 5: History and Progress | Pending |
+| HIST-02 | Phase 5: History and Progress | Pending |
+| PROG-01 | Phase 5: History and Progress | Pending |
+| PROG-02 | Phase 5: History and Progress | Pending |
+| PROG-03 | Phase 5: History and Progress | Pending |
+| PROG-04 | Phase 5: History and Progress | Pending |
+| DATA-01 | Phase 6: Data Export | Pending |
 
 **Coverage:**
 - v1 requirements: 19 total
-- Mapped to phases: 0
-- Unmapped: 19 ⚠️ (populated during roadmap creation)
+- Mapped to phases: 19
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-04*
-*Last updated: 2026-04-04 after initial definition*
+*Last updated: 2026-04-04 after roadmap creation*
