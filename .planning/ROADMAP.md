@@ -65,11 +65,16 @@ Plans:
   2. User can view and select from pre-built program templates (PPL, 5x5, nSuns, GZCLP) that come with the app for free
   3. User can edit an existing plan by adding, removing, or reordering exercises
   4. User can create unlimited plans with no paywall or artificial restriction
-**Plans**: TBD
+**Plans**: 7 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md — Wave 0 test stubs: WorkoutPlanRepositoryTest, PlanExerciseRepositoryTest, TemplateParserTest
+- [ ] 03-02-PLAN.md — Dependencies + DAOs + GymTrackerDatabase + templates.json + MuscleGroups constant
+- [ ] 03-03-PLAN.md — WorkoutPlanRepository (with @Serializable template types) + WorkoutPlanViewModel + Koin DI
+- [ ] 03-04-PLAN.md — PlansScreen UI: two-section layout, FAB, plan cards, template cards, long-press menu, navigation routes
+- [ ] 03-05-PLAN.md — PlanDetailScreen: drag-and-drop reorder, swipe-to-delete, exercise picker, target sheet
+- [ ] 03-06-PLAN.md — TemplatePreviewScreen: exercise list preview, "Use this program" import flow
+- [ ] 03-07-PLAN.md — Human verification: end-to-end Plans smoke test (7 scenarios)
 
 ### Phase 4: Workout Logging
 **Goal**: Users can log a complete workout session in real time or after the fact, with rest timer support and visibility into previous performance
@@ -126,7 +131,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-04-04 |
 | 2. Exercise Library | 4/5 | In Progress|  |
-| 3. Workout Plans | 0/? | Not started | - |
+| 3. Workout Plans | 0/7 | Not started | - |
 | 4. Workout Logging | 0/? | Not started | - |
 | 5. History and Progress | 0/? | Not started | - |
 | 6. Data Export | 0/? | Not started | - |
