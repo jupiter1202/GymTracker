@@ -84,7 +84,7 @@ Each task was committed atomically:
 1. **Task 1: Navigation scaffold — BottomNavDestination, AppNavHost, 4 placeholder screens** - `689db53` (feat)
 2. **Task 2: SettingsScreen with unit toggle and refactor MainActivity** - `7a7390e` (feat)
 
-_Task 3 is a human verification checkpoint — awaiting user confirmation._
+3. **Task 3: Human verification — end-to-end Phase 1 smoke test** - approved by user (no files modified)
 
 ## Files Created/Modified
 - `app/src/main/java/de/jupiter1202/gymtracker/navigation/BottomNavDestination.kt` - Enum with 5 routes, labels, and core material icons
@@ -128,11 +128,7 @@ _Task 3 is a human verification checkpoint — awaiting user confirmation._
 None beyond the deviations documented above.
 
 ## User Setup Required
-Run the app on an emulator or physical device (API 29+) to verify the full navigation scaffold end-to-end:
-1. `./gradlew installDebug` then launch GymTracker
-2. Tap all 5 bottom nav tabs
-3. Test kg/lbs toggle persistence across app restart
-4. Verify back button exits app from any tab
+None - human smoke test approved. All 9 verification checks passed on device/emulator.
 
 ## Next Phase Readiness
 - Navigation scaffold is permanent — Phases 2-5 replace placeholder composable bodies only
