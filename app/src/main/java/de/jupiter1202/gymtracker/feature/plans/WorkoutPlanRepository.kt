@@ -132,6 +132,9 @@ class WorkoutPlanRepository(
         val templateLower = templateExerciseName.lowercase()
         val templateWords = templateLower.split(" ").filter { it.isNotEmpty() }
         
+        // Minimum threshold: at least 70% of content should match
+        val minScoreThreshold = (templateLower.length * 0.7).toInt()
+        
         // Find best match based on word overlap and position
         var bestMatch: Pair<String, Long>? = null
         var bestScore = 0
@@ -139,24 +142,22 @@ class WorkoutPlanRepository(
         for ((dbExerciseName, exerciseId) in exerciseLookup) {
             val dbWords = dbExerciseName.split(" ").filter { it.isNotEmpty() }
             
-            // Count matching words (more matches = higher score)
-            var matchScore = 0
+            // Count matching characters (not words)
+            var matchingChars = 0
             for (templateWord in templateWords) {
                 for (dbWord in dbWords) {
-                    if (dbWord.startsWith(templateWord) || templateWord.startsWith(dbWord)) {
-                        matchScore += 2
-                    } else if (dbWord.contains(templateWord) || templateWord.contains(dbWord)) {
-                        matchScore += 1
+                    // Check how much of the template word matches the db word
+                    if (dbWord.contains(templateWord, ignoreCase = true)) {
+                        matchingChars += templateWord.length
+                    } else if (templateWord.contains(dbWord, ignoreCase = true)) {
+                        matchingChars += dbWord.length / 2 // Partial credit for reverse match
                     }
                 }
             }
             
-            // Penalize if lengths differ significantly
-            val lengthDiff = kotlin.math.abs(templateLower.length - dbExerciseName.length)
-            matchScore -= lengthDiff / 5
-            
-            if (matchScore > bestScore && matchScore > 0) {
-                bestScore = matchScore
+            // Only consider matches that meet the threshold
+            if (matchingChars >= minScoreThreshold && matchingChars > bestScore) {
+                bestScore = matchingChars
                 bestMatch = dbExerciseName to exerciseId
             }
         }
