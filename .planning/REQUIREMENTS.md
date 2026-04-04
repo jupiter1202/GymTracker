@@ -9,9 +9,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Exercise Library
 
-- [ ] **EXER-01**: App ships with a pre-seeded library of 100-150 exercises tagged with muscle groups, available on first launch
-- [ ] **EXER-02**: User can create custom exercises with a name, primary muscle group, and equipment type
-- [ ] **EXER-03**: User can search exercises by name and filter by muscle group
+- [x] **EXER-01**: App ships with a pre-seeded library of 100-150 exercises tagged with muscle groups, available on first launch
+- [x] **EXER-02**: User can create custom exercises with a name, primary muscle group, and equipment type
+- [x] **EXER-03**: User can search exercises by name and filter by muscle group
 
 ### Workout Plans
 
@@ -87,9 +87,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | GEN-01 | Phase 1: Foundation | Complete |
 | LOG-02 | Phase 1: Foundation | Complete |
-| EXER-01 | Phase 2: Exercise Library | Pending |
-| EXER-02 | Phase 2: Exercise Library | Pending |
-| EXER-03 | Phase 2: Exercise Library | Pending |
+| EXER-01 | Phase 2: Exercise Library | Complete |
+| EXER-02 | Phase 2: Exercise Library | Complete |
+| EXER-03 | Phase 2: Exercise Library | Complete |
 | PLAN-01 | Phase 3: Workout Plans | Pending |
 | PLAN-02 | Phase 3: Workout Plans | Pending |
 | PLAN-03 | Phase 3: Workout Plans | Pending |

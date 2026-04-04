@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Phase 2 context gathered
-last_updated: "2026-04-04T13:26:17.046Z"
+stopped_at: Completed 02-exercise-library/02-01-PLAN.md
+last_updated: "2026-04-04T13:48:47.437Z"
 last_activity: 2026-04-04 -- Roadmap created
 progress:
   total_phases: 6
   completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 9
+  completed_plans: 5
   percent: 0
 ---
 
@@ -54,6 +54,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-foundation P02 | 2 | 2 tasks | 9 files |
 | Phase 01-foundation P03 | 3 | 2 tasks | 9 files |
 | Phase 01-foundation P04 | 3 | 2 tasks | 8 files |
+| Phase 02-exercise-library P01 | 4min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -74,6 +75,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: preferencesDataStore extension defined once in DataStoreProvider.kt — prevents DataStore corruption from multiple singleton instances
 - [Phase 01-foundation]: Used material-icons-core alternatives (Star, DateRange, AutoMirrored.List) for Exercises/Plans/History tabs to avoid adding material-icons-extended dependency for only 3 icons
 - [Phase 01-foundation]: Human smoke test approved: all 5 tabs navigate, kg/lbs toggle persists across app restart, back exits app
+- [Phase 02-exercise-library]: Wave 0 scaffold pattern: placeholder types in test files so tests compile before Wave 2 implementations exist; stubs removed when real classes added in 02-02
+- [Phase 02-exercise-library]: kotlinx-coroutines-test added as explicit dependency: required for runTest in unit tests (not provided transitively at compile scope)
 
 ### Pending Todos
 
@@ -87,6 +90,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-04T13:26:17.043Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-exercise-library/02-CONTEXT.md
+Last session: 2026-04-04T13:48:47.434Z
+Stopped at: Completed 02-exercise-library/02-01-PLAN.md
+Resume file: None
