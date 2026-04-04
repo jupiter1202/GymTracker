@@ -15,6 +15,7 @@ import de.jupiter1202.gymtracker.feature.dashboard.DashboardScreen
 import de.jupiter1202.gymtracker.feature.exercises.ExercisesScreen
 import de.jupiter1202.gymtracker.feature.history.HistoryScreen
 import de.jupiter1202.gymtracker.feature.plans.PlansScreen
+import de.jupiter1202.gymtracker.feature.plans.PlanDetailScreen
 import de.jupiter1202.gymtracker.feature.settings.SettingsScreen
 
 @Composable
@@ -35,15 +36,16 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
         composable(BottomNavDestination.History.route) { HistoryScreen() }
         composable(BottomNavDestination.Settings.route) { SettingsScreen() }
 
-        // Plan detail route (placeholder — replaced in 03-05)
+        // Plan detail route
         composable(
             route = "plan_detail/{planId}",
             arguments = listOf(navArgument("planId") { type = NavType.LongType })
         ) { backStackEntry ->
             val planId = backStackEntry.arguments?.getLong("planId") ?: return@composable
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Plan Detail — id: $planId")
-            }
+            PlanDetailScreen(
+                planId = planId,
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
 
         // Template preview route (placeholder — replaced in 03-06)
