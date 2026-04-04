@@ -1,0 +1,28 @@
+[
+  {
+    "id": "ppl",
+    "name": "Push Pull Legs",
+    "description": "Push Pull Legs — 3 days/week. Classic hypertrophy split.",
+    "days": [
+      {
+        "name": "Push",
+        "exercises": [
+          { "exercise_name": "Bench Press", "target_sets": 4, "target_reps": "8-12" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "stronglifts_5x5",
+    "name": "StrongLifts 5x5",
+    "description": "StrongLifts 5x5 — 3 days/week. Beginner strength program.",
+    "days": [
+      {
+        "name": "Workout A",
+        "exercises": [
+          { "exercise_name": "Squat", "target_sets": 5, "target_reps": "5" }
+        ]
+      }
+    ]
+  }
+]
