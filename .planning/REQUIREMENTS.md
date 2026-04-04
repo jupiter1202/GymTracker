@@ -22,7 +22,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Workout Logging
 
 - [ ] **LOG-01**: User can log a workout session by starting a plan or an ad-hoc session and recording sets with weight and reps
-- [ ] **LOG-02**: User can toggle between kg and lbs; preference persists across sessions
+- [x] **LOG-02**: User can toggle between kg and lbs; preference persists across sessions
 - [ ] **LOG-03**: App displays a configurable rest timer that auto-starts after each set is logged
 - [ ] **LOG-04**: App shows previous performance for each exercise during a workout (e.g. "Last: 3×8 @ 75 kg")
 - [ ] **LOG-05**: App tracks and displays total workout duration while a session is active
@@ -45,7 +45,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### General
 
-- [ ] **GEN-01**: App source code is released under an open source license (MIT or GPL-3.0)
+- [x] **GEN-01**: App source code is released under an open source license (MIT or GPL-3.0)
 
 ## v2 Requirements
 
@@ -85,8 +85,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| GEN-01 | Phase 1: Foundation | Pending |
-| LOG-02 | Phase 1: Foundation | Pending |
+| GEN-01 | Phase 1: Foundation | Complete |
+| LOG-02 | Phase 1: Foundation | Complete |
 | EXER-01 | Phase 2: Exercise Library | Pending |
 | EXER-02 | Phase 2: Exercise Library | Pending |
 | EXER-03 | Phase 2: Exercise Library | Pending |
