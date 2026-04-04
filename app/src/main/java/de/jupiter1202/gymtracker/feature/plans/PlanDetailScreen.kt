@@ -163,6 +163,7 @@ private fun PlanExerciseList(
     var localList by remember(exercises) { mutableStateOf(exercises) }
     val lazyListState = androidx.compose.foundation.lazy.rememberLazyListState()
     val reorderState = rememberReorderableLazyListState(lazyListState) { from, to ->
+        android.util.Log.d("PlanDetailScreen", "Reordering from ${from.index} to ${to.index}")
         localList = localList.toMutableList().apply {
             add(to.index, removeAt(from.index))
         }
