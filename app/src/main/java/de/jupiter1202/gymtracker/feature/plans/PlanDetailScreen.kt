@@ -3,6 +3,7 @@ package de.jupiter1202.gymtracker.feature.plans
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -245,19 +247,34 @@ private fun ExerciseRowWithDelete(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Drag handle with hover cursor
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .pointerHoverIcon(PointerIcon.Hand, overrideDescendants = true),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                "≡",
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
+        // Drag handle — long-press to drag
+         Surface(
+             modifier = Modifier
+                 .size(40.dp)
+                 .pointerHoverIcon(PointerIcon.Hand, overrideDescendants = true)
+                 .pointerInput(Unit) {
+                     detectTapGestures(
+                         onPress = {
+                             android.util.Log.d("PlanDetailScreen", "Drag handle pressed")
+                         },
+                         onLongPress = {
+                             android.util.Log.d("PlanDetailScreen", "Drag handle long pressed")
+                         }
+                     )
+                 },
+             color = Color.Transparent
+         ) {
+             Box(
+                 contentAlignment = Alignment.Center,
+                 modifier = Modifier.fillMaxSize()
+             ) {
+                 Text(
+                     "≡",
+                     style = MaterialTheme.typography.headlineSmall,
+                     color = MaterialTheme.colorScheme.onSurfaceVariant
+                 )
+             }
+         }
         
         // Exercise info
         Column(
