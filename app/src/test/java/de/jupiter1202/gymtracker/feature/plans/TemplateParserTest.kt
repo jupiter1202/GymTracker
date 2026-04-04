@@ -1,61 +1,8 @@
 package de.jupiter1202.gymtracker.feature.plans
 
+import kotlinx.serialization.json.Json
 import org.junit.Assert.assertEquals
 import org.junit.Test
-
-// ---------------------------------------------------------------------------
-// Stub types — replaced by real kotlinx.serialization types in plan 03-02/03-03
-// ---------------------------------------------------------------------------
-
-data class TemplateProgram(
-    val id: String,
-    val name: String,
-    val description: String
-)
-
-/**
- * Minimal stub JSON parser — no Android or external dependency needed.
- * Extracts top-level objects and their "id", "name", "description" string fields
- * using a simple regex approach. Replaced by kotlinx.serialization in plan 03-03.
- */
-fun parseTemplates(json: String): List<TemplateProgram> {
-    val objectPattern = Regex("\\{[^{}]*(?:\\{[^{}]*\\}[^{}]*)*\\}", RegexOption.DOT_MATCHES_ALL)
-    val fieldPattern = Regex("\"(id|name|description)\"\\s*:\\s*\"([^\"]+)\"")
-
-    // Split on top-level objects: find the outer array items
-    // We walk depth-manually to split by top-level `{...}` blocks
-    val topLevel = mutableListOf<String>()
-    var depth = 0
-    var start = -1
-    for (i in json.indices) {
-        when (json[i]) {
-            '{' -> {
-                if (depth == 0) start = i
-                depth++
-            }
-            '}' -> {
-                depth--
-                if (depth == 0 && start >= 0) {
-                    topLevel.add(json.substring(start, i + 1))
-                    start = -1
-                }
-            }
-        }
-    }
-
-    return topLevel.map { obj ->
-        val fields = fieldPattern.findAll(obj).associate { it.groupValues[1] to it.groupValues[2] }
-        TemplateProgram(
-            id = fields["id"] ?: "",
-            name = fields["name"] ?: "",
-            description = fields["description"] ?: ""
-        )
-    }
-}
-
-// ---------------------------------------------------------------------------
-// Tests
-// ---------------------------------------------------------------------------
 
 class TemplateParserTest {
 
@@ -91,24 +38,26 @@ class TemplateParserTest {
 ]"""
     }
 
+    private val json = Json { ignoreUnknownKeys = true }
+
     // PLAN-02: JSON fixture has exactly 2 programs
     @Test
     fun parseTemplates_returnsTwoPrograms() {
-        val programs = parseTemplates(FIXTURE_JSON)
+        val programs = json.decodeFromString<List<TemplateProgram>>(FIXTURE_JSON)
         assertEquals("Expected 2 programs", 2, programs.size)
     }
 
     // PLAN-02: First program is PPL
     @Test
     fun parseTemplates_firstProgramIsPPL() {
-        val programs = parseTemplates(FIXTURE_JSON)
+        val programs = json.decodeFromString<List<TemplateProgram>>(FIXTURE_JSON)
         assertEquals("Expected first program id to be 'ppl'", "ppl", programs[0].id)
     }
 
     // PLAN-02: Second program is StrongLifts 5x5
     @Test
     fun parseTemplates_secondProgramIs5x5() {
-        val programs = parseTemplates(FIXTURE_JSON)
+        val programs = json.decodeFromString<List<TemplateProgram>>(FIXTURE_JSON)
         assertEquals(
             "Expected second program id to be 'stronglifts_5x5'",
             "stronglifts_5x5",
