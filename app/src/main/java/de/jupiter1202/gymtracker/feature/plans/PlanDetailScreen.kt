@@ -91,16 +91,8 @@ fun PlanDetailScreen(planId: Long, onNavigateBack: () -> Unit) {
                 },
                 onDeleteExercise = { exercise ->
                     viewModel.removeExercise(exercise.planExercise)
-                }
-            )
-            
-            // "+ Add exercise" button at bottom
-            ListItem(
-                headlineContent = { Text("Add exercise") },
-                leadingContent = {
-                    Icon(Icons.Default.Add, contentDescription = "Add exercise")
                 },
-                modifier = Modifier.clickable { showExercisePicker = true }
+                onAddExercise = { showExercisePicker = true }
             )
         }
     }
@@ -163,7 +155,8 @@ private fun PlanExerciseList(
     exercises: List<PlanExerciseWithExercise>,
     onReorder: (List<PlanExerciseWithExercise>) -> Unit,
     onExerciseClick: (PlanExerciseWithExercise) -> Unit,
-    onDeleteExercise: (PlanExerciseWithExercise) -> Unit
+    onDeleteExercise: (PlanExerciseWithExercise) -> Unit,
+    onAddExercise: () -> Unit
 ) {
     var localList by remember(exercises) { mutableStateOf(exercises) }
     val lazyListState = androidx.compose.foundation.lazy.rememberLazyListState()
@@ -191,6 +184,17 @@ private fun PlanExerciseList(
                     isDragging = isDragging
                 )
             }
+        }
+        
+        // "+ Add exercise" button at bottom
+        item {
+            ListItem(
+                headlineContent = { Text("Add exercise") },
+                leadingContent = {
+                    Icon(Icons.Default.Add, contentDescription = "Add exercise")
+                },
+                modifier = Modifier.clickable { onAddExercise() }
+            )
         }
     }
 }

@@ -68,12 +68,12 @@ Plans:
 **Plans**: 7 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Wave 0 test stubs: WorkoutPlanRepositoryTest, PlanExerciseRepositoryTest, TemplateParserTest
-- [ ] 03-02-PLAN.md — Dependencies + DAOs + GymTrackerDatabase + templates.json + MuscleGroups constant
-- [ ] 03-03-PLAN.md — WorkoutPlanRepository (with @Serializable template types) + WorkoutPlanViewModel + Koin DI
-- [ ] 03-04-PLAN.md — PlansScreen UI: two-section layout, FAB, plan cards, template cards, long-press menu, navigation routes
-- [ ] 03-05-PLAN.md — PlanDetailScreen: drag-and-drop reorder, swipe-to-delete, exercise picker, target sheet
-- [ ] 03-06-PLAN.md — TemplatePreviewScreen: exercise list preview, "Use this program" import flow
+- [x] 03-01-PLAN.md — Wave 0 test stubs: WorkoutPlanRepositoryTest, PlanExerciseRepositoryTest, TemplateParserTest
+- [x] 03-02-PLAN.md — Dependencies + DAOs + GymTrackerDatabase + templates.json + MuscleGroups constant
+- [x] 03-03-PLAN.md — WorkoutPlanRepository (with @Serializable template types) + WorkoutPlanViewModel + Koin DI
+- [x] 03-04-PLAN.md — PlansScreen UI: two-section layout, FAB, plan cards, template cards, long-press menu, navigation routes
+- [x] 03-05-PLAN.md — PlanDetailScreen: drag-and-drop reorder, swipe-to-delete, exercise picker, target sheet
+- [x] 03-06-PLAN.md — TemplatePreviewScreen: exercise list preview, "Use this program" import flow
 - [ ] 03-07-PLAN.md — Human verification: end-to-end Plans smoke test (7 scenarios)
 
 ### Phase 4: Workout Logging
