@@ -12,7 +12,7 @@ GymTracker delivers a free, open-source Android workout tracker by building from
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - Project scaffolding, database schema, architecture, and unit system
+- [x] **Phase 1: Foundation** - Project scaffolding, database schema, architecture, and unit system (completed 2026-04-04)
 - [ ] **Phase 2: Exercise Library** - Pre-seeded exercise database with search, filter, and custom exercise creation
 - [ ] **Phase 3: Workout Plans** - Custom workout plans and pre-built program templates
 - [ ] **Phase 4: Workout Logging** - Live and post-hoc session logging with rest timer and previous performance
@@ -121,7 +121,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 3/4 | In Progress|  |
+| 1. Foundation | 4/4 | Complete   | 2026-04-04 |
 | 2. Exercise Library | 0/? | Not started | - |
 | 3. Workout Plans | 0/? | Not started | - |
 | 4. Workout Logging | 0/? | Not started | - |
