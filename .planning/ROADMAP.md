@@ -30,11 +30,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Source code repository has an open source license file (MIT or GPL-3.0)
   3. User can toggle between kg and lbs in a settings screen, and the preference persists after closing and reopening the app
   4. Room database with all 6 entities (Exercise, WorkoutPlan, PlanExercise, WorkoutSession, WorkoutSet, BodyMeasurement) is created on first launch with schema export enabled
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md — Build scaffolding: add all dependencies, Wave 0 test stubs, MIT LICENSE
+- [ ] 01-02-PLAN.md — Room database: 6 entity classes and GymTrackerDatabase
+- [ ] 01-03-PLAN.md — DI and settings layer: Koin, DataStore, SettingsRepository, UnitConverter
+- [ ] 01-04-PLAN.md — Navigation scaffold and UI: 5-tab nav, placeholder screens, Settings screen
 
 ### Phase 2: Exercise Library
 **Goal**: Users have a fully populated exercise library they can browse, search, filter, and extend with their own exercises
