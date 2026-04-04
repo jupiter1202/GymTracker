@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-04-04T14:08:58.287Z"
+stopped_at: Completed 02-04-PLAN.md
+last_updated: "2026-04-04T14:15:47.221Z"
 last_activity: 2026-04-04 -- Completed 02-02 (Exercise Library Data Layer)
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 9
-  completed_plans: 7
+  completed_plans: 8
   percent: 78
 ---
 
@@ -57,6 +57,7 @@ Progress: [███████░░░] 78%
 | Phase 02-exercise-library P01 | 4min | 2 tasks | 4 files |
 | Phase 02-exercise-library P02 | 15min | 2 tasks | 7 files |
 | Phase 02-exercise-library P03 | 3min | 1 tasks | 2 files |
+| Phase 02-exercise-library P04 | 4min | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,7 @@ Recent decisions affecting current work:
 - [Phase 02-exercise-library]: createFromAsset added to databaseBuilder before .build() — Room validates identity_hash on first open, seed DB must be Room-generated
 - [Phase 02-exercise-library]: Seed database populated with 124 exercises via DB Browser for SQLite across 12 muscle groups; committed to app/src/main/assets/gymtracker_seed.db
 - [Phase 02-exercise-library]: @OptIn(ExperimentalCoroutinesApi::class) applied at class level on ExerciseViewModel for flatMapLatest — stable API, annotation is boilerplate only
+- [Phase 02-exercise-library]: menuAnchor(MenuAnchorType.PrimaryNotEditable) used over deprecated menuAnchor() for ExposedDropdownMenuBox — correct anchor type for read-only dropdown fields in M3
 
 ### Pending Todos
 
@@ -96,6 +98,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-04T14:08:58.285Z
-Stopped at: Completed 02-03-PLAN.md
+Last session: 2026-04-04T14:15:47.218Z
+Stopped at: Completed 02-04-PLAN.md
 Resume file: None
