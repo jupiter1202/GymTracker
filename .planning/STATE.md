@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 02-exercise-library/02-01-PLAN.md
-last_updated: "2026-04-04T13:48:47.437Z"
+stopped_at: "Checkpoint 02-02 Task 2: awaiting seed database from user"
+last_updated: "2026-04-04T13:52:49.811Z"
 last_activity: 2026-04-04 -- Roadmap created
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 9
-  completed_plans: 5
+  completed_plans: 6
   percent: 0
 ---
 
@@ -77,6 +77,10 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: Human smoke test approved: all 5 tabs navigate, kg/lbs toggle persists across app restart, back exits app
 - [Phase 02-exercise-library]: Wave 0 scaffold pattern: placeholder types in test files so tests compile before Wave 2 implementations exist; stubs removed when real classes added in 02-02
 - [Phase 02-exercise-library]: kotlinx-coroutines-test added as explicit dependency: required for runTest in unit tests (not provided transitively at compile scope)
+- [Phase 02-exercise-library]: ExerciseDao uses named parameters (:query, :muscleGroup) in @Query SQL — required by Room KSP, positional parameters are rejected
+- [Phase 02-exercise-library]: DeleteResult sealed class defined at file-level in ExerciseRepository.kt — accessible to ViewModel without importing inner class
+- [Phase 02-exercise-library]: delete-guard implemented in application code via countUsagesInSessions() — WorkoutSet FK uses SET_NULL so guard must be app-level
+- [Phase 02-exercise-library]: createFromAsset added to databaseBuilder before .build() — Room validates identity_hash on first open, seed DB must be Room-generated
 
 ### Pending Todos
 
@@ -90,6 +94,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-04T13:48:47.434Z
-Stopped at: Completed 02-exercise-library/02-01-PLAN.md
+Last session: 2026-04-04T13:52:43.410Z
+Stopped at: Checkpoint 02-02 Task 2: awaiting seed database from user
 Resume file: None
