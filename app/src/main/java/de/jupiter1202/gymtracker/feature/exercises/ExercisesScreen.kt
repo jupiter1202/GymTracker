@@ -56,19 +56,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import de.jupiter1202.gymtracker.core.constants.EQUIPMENT_TYPES
+import de.jupiter1202.gymtracker.core.constants.MUSCLE_GROUPS
 import de.jupiter1202.gymtracker.core.database.entities.Exercise
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-
-val MUSCLE_GROUPS = listOf(
-    "Chest", "Back", "Shoulders", "Biceps", "Triceps", "Forearms",
-    "Quads", "Hamstrings", "Glutes", "Calves", "Core", "Cardio"
-)
-
-val EQUIPMENT_TYPES = listOf(
-    "Barbell", "Dumbbell", "Cable", "Machine", "Bodyweight",
-    "Kettlebell", "Resistance Band", "Other"
-)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
