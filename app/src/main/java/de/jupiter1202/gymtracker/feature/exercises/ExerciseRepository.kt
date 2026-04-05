@@ -26,4 +26,6 @@ class ExerciseRepository(private val dao: ExerciseDao) {
             DeleteResult.Deleted
         }
     }
+
+    suspend fun getExerciseById(id: Long): Exercise? = dao.getExerciseById(id)
 }

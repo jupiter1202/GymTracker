@@ -30,4 +30,7 @@ interface ExerciseDao {
 
     @Query("SELECT COUNT(*) FROM workout_sets WHERE exercise_id = :exerciseId")
     suspend fun countUsagesInSessions(exerciseId: Long): Int
+
+    @Query("SELECT * FROM exercises WHERE id = :id LIMIT 1")
+    suspend fun getExerciseById(id: Long): Exercise?
 }
