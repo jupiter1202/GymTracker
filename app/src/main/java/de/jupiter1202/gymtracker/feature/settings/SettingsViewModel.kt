@@ -19,4 +19,16 @@ class SettingsViewModel(private val repository: SettingsRepository) : ViewModel(
             repository.setWeightUnit(unit)
         }
     }
+
+    val restTimerSeconds: StateFlow<Int> = repository.restTimerSeconds.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = 90
+    )
+
+    fun setRestTimerSeconds(seconds: Int) {
+        viewModelScope.launch {
+            repository.setRestTimerSeconds(seconds)
+        }
+    }
 }

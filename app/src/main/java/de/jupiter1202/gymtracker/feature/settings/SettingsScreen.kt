@@ -5,15 +5,22 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
@@ -49,6 +56,31 @@ fun SettingsScreen(
                     }
                 }
             }
+        }
+        
+        // Rest Timer section
+        Text(
+            text = "Rest Timer",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+        )
+        val restSeconds by viewModel.restTimerSeconds.collectAsStateWithLifecycle()
+        var restInput by remember(restSeconds) { mutableStateOf(restSeconds.toString()) }
+        SettingsRow(label = "Default rest (seconds)") {
+            OutlinedTextField(
+                value = restInput,
+                onValueChange = { value ->
+                    restInput = value
+                    val parsed = value.toIntOrNull()
+                    if (parsed != null && parsed in 10..600) {
+                        viewModel.setRestTimerSeconds(parsed)
+                    }
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                singleLine = true,
+                modifier = Modifier.width(100.dp)
+            )
         }
     }
 }
