@@ -101,8 +101,8 @@ Plans:
 - [x] 04-09-PLAN.md — Gap closure: Load Exercise entities in crash recovery (GAPS-02)
 - [x] 04-10-PLAN.md — Gap closure: Fix elapsed timer updates in UI (GAPS-03)
 - [ ] 04-11-PLAN.md — Gap closure verification: Re-verify all gaps fixed
-- [ ] 04-12-PLAN.md — Root cause fix: ActiveWorkoutScreen activeSession null check + resumeSession guard (Flow race condition)
-- [ ] 04-13-PLAN.md — Gap verification: Tests confirming all 3 gaps fixed
+- [x] 04-12-PLAN.md — Root cause fix: ActiveWorkoutScreen activeSession null check + resumeSession guard (Flow race condition)
+- [x] 04-13-PLAN.md — Gap verification: Tests confirming all 3 gaps fixed
 - [ ] 04-14-PLAN.md — UI additions: DoneButton per exercise + markExerciseDone() auto-timer
 - [ ] 04-15-PLAN.md — Final human verification: All gaps + Done button functionality
 

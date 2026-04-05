@@ -21,11 +21,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Workout Logging
 
-- [ ] **LOG-01**: User can log a workout session by starting a plan or an ad-hoc session and recording sets with weight and reps
+- [x] **LOG-01**: User can log a workout session by starting a plan or an ad-hoc session and recording sets with weight and reps
 - [x] **LOG-02**: User can toggle between kg and lbs; preference persists across sessions
-- [ ] **LOG-03**: App displays a configurable rest timer that auto-starts after each set is logged
-- [ ] **LOG-04**: App shows previous performance for each exercise during a workout (e.g. "Last: 3×8 @ 75 kg")
-- [ ] **LOG-05**: App tracks and displays total workout duration while a session is active
+- [x] **LOG-03**: App displays a configurable rest timer that auto-starts after each set is logged
+- [x] **LOG-04**: App shows previous performance for each exercise during a workout (e.g. "Last: 3×8 @ 75 kg")
+- [x] **LOG-05**: App tracks and displays total workout duration while a session is active
 
 ### Workout History
 
@@ -93,10 +93,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PLAN-01 | Phase 3: Workout Plans | Complete |
 | PLAN-02 | Phase 3: Workout Plans | Complete |
 | PLAN-03 | Phase 3: Workout Plans | Complete |
-| LOG-01 | Phase 4: Workout Logging | Pending |
-| LOG-03 | Phase 4: Workout Logging | Pending |
-| LOG-04 | Phase 4: Workout Logging | Pending |
-| LOG-05 | Phase 4: Workout Logging | Pending |
+| LOG-01 | Phase 4: Workout Logging | Complete |
+| LOG-03 | Phase 4: Workout Logging | Complete |
+| LOG-04 | Phase 4: Workout Logging | Complete |
+| LOG-05 | Phase 4: Workout Logging | Complete |
 | HIST-01 | Phase 5: History and Progress | Pending |
 | HIST-02 | Phase 5: History and Progress | Pending |
 | PROG-01 | Phase 5: History and Progress | Pending |
