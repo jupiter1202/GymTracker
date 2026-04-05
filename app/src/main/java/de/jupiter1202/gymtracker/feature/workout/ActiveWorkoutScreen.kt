@@ -25,6 +25,7 @@ import de.jupiter1202.gymtracker.core.database.entities.Exercise
 import de.jupiter1202.gymtracker.core.UnitConverter
 import de.jupiter1202.gymtracker.core.constants.MUSCLE_GROUPS
 import de.jupiter1202.gymtracker.feature.exercises.ExerciseViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,6 +54,8 @@ fun ActiveWorkoutScreen(
 
     var showExercisePicker by remember { mutableStateOf(false) }
     var confirmFinishDialog by remember { mutableStateOf(false) }
+    
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -69,11 +72,13 @@ fun ActiveWorkoutScreen(
                     actions = {
                         TextButton(
                             onClick = {
-                                val canFinish = viewModel.finishSession()
-                                if (canFinish) {
-                                    onFinished(sessionId)
-                                } else {
-                                    confirmFinishDialog = true
+                                scope.launch {
+                                    val canFinish = viewModel.finishSession()
+                                    if (canFinish) {
+                                        onFinished(sessionId)
+                                    } else {
+                                        confirmFinishDialog = true
+                                    }
                                 }
                             }
                         ) {
@@ -186,18 +191,20 @@ fun ActiveWorkoutScreen(
                     Text("Cancel")
                 }
             },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        confirmFinishDialog = false
-                        // Force finish without checking for empty sections
-                        viewModel.finishSession()
-                        onFinished(sessionId)
-                    }
-                ) {
-                    Text("Finish")
-                }
-            }
+             confirmButton = {
+                 TextButton(
+                     onClick = {
+                         confirmFinishDialog = false
+                         // Force finish without checking for empty sections
+                         scope.launch {
+                             viewModel.finishSession()
+                             onFinished(sessionId)
+                         }
+                     }
+                 ) {
+                     Text("Finish")
+                 }
+             }
         )
     }
 }

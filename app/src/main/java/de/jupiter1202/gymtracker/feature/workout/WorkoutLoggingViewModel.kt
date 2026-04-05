@@ -431,8 +431,9 @@ class WorkoutLoggingViewModel(
     /**
      * Finish the current session
      * Returns false if any exercise has no logged sets, true otherwise
+     * This is a suspend function to ensure summary is computed before returning
      */
-    fun finishSession(): Boolean {
+    suspend fun finishSession(): Boolean {
         val activeSession = _activeSession.value ?: return false
         
         // Check if any section has no sets
@@ -440,24 +441,22 @@ class WorkoutLoggingViewModel(
             return false
         }
         
-        viewModelScope.launch {
-            sessionRepository.finishSession(activeSession)
-            
-            // Compute and set summary
-            val allSets = _exerciseSections.value.flatMap { it.loggedSets }
-            _summary.value = WorkoutSummary(
-                sessionName = activeSession.name,
-                durationMs = System.currentTimeMillis() - activeSession.startedAt,
-                exerciseCount = _exerciseSections.value.size,
-                totalSets = allSets.size,
-                totalVolumeKg = allSets.sumOf { it.weightKg * it.reps }
-            )
-            
-            _activeSession.value = null
-            _exerciseSections.value = emptyList()
-            _elapsedMs.value = 0L
-            cancelTimers()
-        }
+        sessionRepository.finishSession(activeSession)
+        
+        // Compute and set summary
+        val allSets = _exerciseSections.value.flatMap { it.loggedSets }
+        _summary.value = WorkoutSummary(
+            sessionName = activeSession.name,
+            durationMs = System.currentTimeMillis() - activeSession.startedAt,
+            exerciseCount = _exerciseSections.value.size,
+            totalSets = allSets.size,
+            totalVolumeKg = allSets.sumOf { it.weightKg * it.reps }
+        )
+        
+        _activeSession.value = null
+        _exerciseSections.value = emptyList()
+        _elapsedMs.value = 0L
+        cancelTimers()
         
         return true
     }
