@@ -82,21 +82,25 @@ Plans:
 **Depends on**: Phase 3
 **Requirements**: LOG-01, LOG-03, LOG-04, LOG-05
 **Success Criteria** (what must be TRUE):
-  1. User can start a workout from a plan or as an ad-hoc session and log sets with weight and reps for each exercise
-  2. After logging a set, a configurable rest timer auto-starts and counts down visibly
-  3. During a workout, each exercise shows what the user lifted last time (e.g., "Last: 3x8 @ 75 kg")
-  4. While a session is active, the app displays total workout duration that updates in real time
-  5. An in-progress workout survives app close and process death -- reopening the app resumes the session
-**Plans**: 7 plans
+   1. User can start a workout from a plan or as an ad-hoc session and log sets with weight and reps for each exercise
+   2. After logging a set, a configurable rest timer auto-starts and counts down visibly
+   3. During a workout, each exercise shows what the user lifted last time (e.g., "Last: 3x8 @ 75 kg")
+   4. While a session is active, the app displays total workout duration that updates in real time
+   5. An in-progress workout survives app close and process death -- reopening the app resumes the session
+**Plans**: 11 plans
 
 Plans:
 - [x] 04-01-PLAN.md — Wave 0 test stubs: WorkoutSessionRepositoryTest, WorkoutSetRepositoryTest, WorkoutLoggingViewModelTest
 - [x] 04-02-PLAN.md — Data layer: WorkoutSessionDao, WorkoutSetDao, WorkoutSessionRepository, WorkoutSetRepository, SettingsRepository rest timer setting
 - [x] 04-03-PLAN.md — WorkoutLoggingViewModel: session state, elapsed timer, rest timer, previous performance, input guards
-- [ ] 04-04-PLAN.md — ActiveWorkoutScreen: LazyColumn exercise sections, inline set input, sticky rest timer banner, exercise picker
-- [ ] 04-05-PLAN.md — WorkoutSummaryScreen, SettingsScreen rest timer row, VIBRATE permission, timer_beep.ogg
-- [ ] 04-06-PLAN.md — Navigation wiring: routes, crash recovery, Dashboard quick-start, Plans Start button, post-hoc date picker
+- [x] 04-04-PLAN.md — ActiveWorkoutScreen: LazyColumn exercise sections, inline set input, sticky rest timer banner, exercise picker
+- [x] 04-05-PLAN.md — WorkoutSummaryScreen, SettingsScreen rest timer row, VIBRATE permission, timer_beep.ogg
+- [x] 04-06-PLAN.md — Navigation wiring: routes, crash recovery, Dashboard quick-start, Plans Start button, post-hoc date picker
 - [ ] 04-07-PLAN.md — Human verification: end-to-end workout logging smoke test (8 scenarios)
+- [ ] 04-08-PLAN.md — Gap closure: Load plan exercises in PlansScreen before session start (GAPS-01)
+- [ ] 04-09-PLAN.md — Gap closure: Load Exercise entities in crash recovery (GAPS-02)
+- [ ] 04-10-PLAN.md — Gap closure: Fix elapsed timer updates in UI (GAPS-03)
+- [ ] 04-11-PLAN.md — Gap closure verification: Re-verify all gaps fixed
 
 ### Phase 5: History and Progress
 **Goal**: Users can review past workouts, see their strength progression over time, track body composition, and get motivated by PR detection
@@ -138,6 +142,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 1. Foundation | 4/4 | Complete   | 2026-04-04 |
 | 2. Exercise Library | 5/5 | Complete   | 2026-04-04 |
 | 3. Workout Plans | 11/11 | Complete  | 2026-04-05 |
-| 4. Workout Logging | 0/7 | Not started | - |
+| 4. Workout Logging | 6/11 | Gap Closure In Progress | - |
 | 5. History and Progress | 0/? | Not started | - |
 | 6. Data Export | 0/? | Not started | - |
