@@ -87,11 +87,16 @@ Plans:
   3. During a workout, each exercise shows what the user lifted last time (e.g., "Last: 3x8 @ 75 kg")
   4. While a session is active, the app displays total workout duration that updates in real time
   5. An in-progress workout survives app close and process death -- reopening the app resumes the session
-**Plans**: TBD
+**Plans**: 7 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [ ] 04-01-PLAN.md — Wave 0 test stubs: WorkoutSessionRepositoryTest, WorkoutSetRepositoryTest, WorkoutLoggingViewModelTest
+- [ ] 04-02-PLAN.md — Data layer: WorkoutSessionDao, WorkoutSetDao, WorkoutSessionRepository, WorkoutSetRepository, SettingsRepository rest timer setting
+- [ ] 04-03-PLAN.md — WorkoutLoggingViewModel: session state, elapsed timer, rest timer, previous performance, input guards
+- [ ] 04-04-PLAN.md — ActiveWorkoutScreen: LazyColumn exercise sections, inline set input, sticky rest timer banner, exercise picker
+- [ ] 04-05-PLAN.md — WorkoutSummaryScreen, SettingsScreen rest timer row, VIBRATE permission, timer_beep.ogg
+- [ ] 04-06-PLAN.md — Navigation wiring: routes, crash recovery, Dashboard quick-start, Plans Start button, post-hoc date picker
+- [ ] 04-07-PLAN.md — Human verification: end-to-end workout logging smoke test (8 scenarios)
 
 ### Phase 5: History and Progress
 **Goal**: Users can review past workouts, see their strength progression over time, track body composition, and get motivated by PR detection
@@ -133,6 +138,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 1. Foundation | 4/4 | Complete   | 2026-04-04 |
 | 2. Exercise Library | 5/5 | Complete   | 2026-04-04 |
 | 3. Workout Plans | 11/11 | Complete  | 2026-04-05 |
-| 4. Workout Logging | 0/? | Not started | - |
+| 4. Workout Logging | 0/7 | Not started | - |
 | 5. History and Progress | 0/? | Not started | - |
 | 6. Data Export | 0/? | Not started | - |
