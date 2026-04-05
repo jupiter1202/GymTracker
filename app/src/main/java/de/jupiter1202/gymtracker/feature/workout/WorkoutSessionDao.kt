@@ -19,4 +19,7 @@ interface WorkoutSessionDao {
 
     @Update
     suspend fun update(session: WorkoutSession)
+
+    @Query("SELECT * FROM workout_sessions WHERE is_completed = 1 ORDER BY started_at DESC")
+    fun getCompletedSessions(): kotlinx.coroutines.flow.Flow<List<WorkoutSession>>
 }

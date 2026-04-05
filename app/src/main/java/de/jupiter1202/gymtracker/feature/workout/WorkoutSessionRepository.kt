@@ -24,6 +24,8 @@ class WorkoutSessionRepository(private val dao: WorkoutSessionDao) {
         ))
     }
 
+    fun getCompletedSessions() = dao.getCompletedSessions()
+
     suspend fun createPostHocSession(name: String, planId: Long?, startedAt: Long): Long {
         val session = WorkoutSession(
             name = name.trim(),

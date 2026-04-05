@@ -12,6 +12,7 @@ import de.jupiter1202.gymtracker.feature.workout.WorkoutSessionDao
 import de.jupiter1202.gymtracker.feature.workout.WorkoutSetDao
 import de.jupiter1202.gymtracker.feature.workout.WorkoutSessionRepository
 import de.jupiter1202.gymtracker.feature.workout.WorkoutSetRepository
+import de.jupiter1202.gymtracker.feature.history.HistoryViewModel
 import de.jupiter1202.gymtracker.feature.workout.WorkoutLoggingViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
@@ -42,4 +43,5 @@ val appModule = module {
     viewModel { SettingsViewModel(get()) }
     viewModel { WorkoutPlanViewModel(get()) }
     single { WorkoutLoggingViewModel(get(), get(), get(), get(), androidContext()) }
+    viewModel { HistoryViewModel(get()) }
 }
