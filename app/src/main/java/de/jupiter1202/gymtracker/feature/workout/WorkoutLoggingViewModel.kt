@@ -152,6 +152,55 @@ class WorkoutLoggingViewModel(
     }
 
     /**
+     * Start a new workout session and return the session ID
+     */
+    suspend fun startSessionAndGetId(name: String, planId: Long?, exercises: List<Exercise>): Long {
+        val sessionId = sessionRepository.createSession(name, planId)
+        val session = sessionRepository.getSessionById(sessionId)
+        
+        if (session != null) {
+            _activeSession.value = session
+            
+            // Create exercise sections with previous performance pre-filled
+            val sections = exercises.map { exercise ->
+                val previousSets = setRepository.getPreviousSessionSets(exercise.id)
+                val previousPerformance = formatPreviousPerformance(previousSets, weightUnit.value)
+                val initialWeight = if (previousSets.isNotEmpty()) {
+                    val lastSetKg = previousSets.last().weightKg
+                    if (weightUnit.value == "lbs") {
+                        UnitConverter.kgToLbs(lastSetKg).toString()
+                    } else {
+                        lastSetKg.toString()
+                    }
+                } else {
+                    ""
+                }
+                val initialReps = previousSets.lastOrNull()?.reps?.toString() ?: ""
+                
+                ExerciseSection(
+                    exercise = exercise,
+                    loggedSets = emptyList(),
+                    pendingInput = PendingSetInput(initialWeight, initialReps),
+                    previousPerformance = previousPerformance
+                )
+            }
+            
+            _exerciseSections.value = sections
+            startElapsedTimer(session.startedAt)
+        }
+        
+        return sessionId
+    }
+
+    /**
+     * Start a post-hoc workout session with a specific start time
+     * Post-hoc sessions are immediately marked as completed
+     */
+    suspend fun startPostHocSession(name: String, planId: Long?, startedAt: Long) {
+        sessionRepository.createPostHocSession(name, planId, startedAt)
+    }
+
+    /**
      * Resume an existing session (crash recovery)
      */
     fun resumeSession(sessionId: Long) {

@@ -43,6 +43,8 @@ class WorkoutPlanRepository(
 
     fun getPlans(): Flow<List<WorkoutPlan>> = planDao.getAllPlans()
 
+    fun getMostRecentlyUsedPlan(): Flow<WorkoutPlan?> = planDao.getMostRecentlyUsedPlan()
+
     suspend fun createPlan(name: String, description: String?): Long {
         val plan = WorkoutPlan(
             name = name.trim(),

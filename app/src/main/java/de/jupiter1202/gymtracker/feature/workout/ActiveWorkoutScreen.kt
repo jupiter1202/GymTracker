@@ -31,7 +31,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ActiveWorkoutScreen(
     sessionId: Long,
-    onFinished: () -> Unit,
+    onFinished: (Long) -> Unit,
     onNavigateBack: () -> Unit,
     viewModel: WorkoutLoggingViewModel = koinViewModel()
 ) {
@@ -67,7 +67,7 @@ fun ActiveWorkoutScreen(
                             onClick = {
                                 val canFinish = viewModel.finishSession()
                                 if (canFinish) {
-                                    onFinished()
+                                    onFinished(sessionId)
                                 } else {
                                     confirmFinishDialog = true
                                 }
@@ -181,7 +181,7 @@ fun ActiveWorkoutScreen(
                         confirmFinishDialog = false
                         // Force finish without checking for empty sections
                         viewModel.finishSession()
-                        onFinished()
+                        onFinished(sessionId)
                     }
                 ) {
                     Text("Finish")

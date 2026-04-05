@@ -17,4 +17,13 @@ interface WorkoutPlanDao {
 
     @Delete
     suspend fun delete(plan: WorkoutPlan)
+
+    @Query("""
+        SELECT wp.* FROM workout_plans wp
+        INNER JOIN workout_sessions ws ON wp.id = ws.plan_id
+        WHERE ws.is_completed = 1
+        ORDER BY ws.started_at DESC
+        LIMIT 1
+    """)
+    fun getMostRecentlyUsedPlan(): Flow<WorkoutPlan?>
 }
