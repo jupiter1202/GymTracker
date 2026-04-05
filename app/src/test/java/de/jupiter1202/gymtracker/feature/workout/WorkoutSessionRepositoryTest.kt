@@ -1,8 +1,6 @@
 package de.jupiter1202.gymtracker.feature.workout
 
 import de.jupiter1202.gymtracker.core.database.entities.WorkoutSession
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -10,16 +8,8 @@ import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 
-// Stub interface for WorkoutSessionRepository (LOG-01)
-interface StubWorkoutSessionDao {
-    suspend fun insert(session: WorkoutSession): Long
-    suspend fun getActiveSession(): WorkoutSession?
-    suspend fun getById(id: Long): WorkoutSession?
-    suspend fun update(session: WorkoutSession)
-}
-
-// Fake implementation of StubWorkoutSessionDao for testing
-private class FakeWorkoutSessionDao : StubWorkoutSessionDao {
+// Fake implementation of WorkoutSessionDao for testing
+internal class FakeWorkoutSessionDaoForSession : WorkoutSessionDao {
     private val sessions = mutableListOf<WorkoutSession>()
     private var nextId = 1L
 
@@ -45,20 +35,13 @@ private class FakeWorkoutSessionDao : StubWorkoutSessionDao {
     }
 }
 
-// Stub repository for testing (LOG-01)
-private class WorkoutSessionRepository(val dao: StubWorkoutSessionDao) {
-    suspend fun createSession(name: String, planId: Long?): Long = TODO()
-
-    suspend fun getActiveSession(): WorkoutSession? = TODO()
-}
-
 class WorkoutSessionRepositoryTest {
-    private lateinit var fakeDao: FakeWorkoutSessionDao
+    private lateinit var fakeDao: FakeWorkoutSessionDaoForSession
     private lateinit var repository: WorkoutSessionRepository
 
     @Before
     fun setUp() {
-        fakeDao = FakeWorkoutSessionDao()
+        fakeDao = FakeWorkoutSessionDaoForSession()
         repository = WorkoutSessionRepository(fakeDao)
     }
 

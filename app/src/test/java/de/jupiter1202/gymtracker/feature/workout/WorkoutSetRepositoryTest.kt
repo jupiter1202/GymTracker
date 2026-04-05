@@ -2,28 +2,32 @@ package de.jupiter1202.gymtracker.feature.workout
 
 import de.jupiter1202.gymtracker.core.database.entities.WorkoutSet
 import de.jupiter1202.gymtracker.core.database.entities.WorkoutSession
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-// Stub interface for WorkoutSetRepository (LOG-01, LOG-04)
-interface StubWorkoutSetDao {
-    suspend fun insert(set: WorkoutSet): Long
-    suspend fun getMaxSetNumber(sessionId: Long, exerciseId: Long): Int?
-    suspend fun getPreviousSessionSets(exerciseId: Long): List<WorkoutSet>
-}
-
-// Fake implementation of StubWorkoutSetDao for testing
-private class FakeWorkoutSetDao : StubWorkoutSetDao {
+// Fake implementation of WorkoutSetDao for testing
+internal class FakeWorkoutSetDaoForSet : WorkoutSetDao {
     private val sets = mutableListOf<WorkoutSet>()
     private var nextId = 1L
+    var completedSessionIds = setOf<Long>()
 
     override suspend fun insert(set: WorkoutSet): Long {
         val setWithId = set.copy(id = nextId)
         sets.add(setWithId)
         return nextId++
+    }
+
+    override fun getSetsForSession(sessionId: Long): Flow<List<WorkoutSet>> {
+        return flowOf(sets.filter { it.sessionId == sessionId })
+    }
+
+    override fun getSetsForExercise(sessionId: Long, exerciseId: Long): Flow<List<WorkoutSet>> {
+        return flowOf(sets.filter { it.sessionId == sessionId && it.exerciseId == exerciseId })
     }
 
     override suspend fun getMaxSetNumber(sessionId: Long, exerciseId: Long): Int? {
@@ -32,29 +36,25 @@ private class FakeWorkoutSetDao : StubWorkoutSetDao {
             .maxOfOrNull { it.setNumber }
     }
 
+    override suspend fun delete(set: WorkoutSet) {
+        sets.removeIf { it.id == set.id }
+    }
+
     override suspend fun getPreviousSessionSets(exerciseId: Long): List<WorkoutSet> {
         // Return sets from the most recent completed session for this exercise
-        // (For stub purposes, return only sets for exercise that have highest session ID)
         if (sets.isEmpty()) return emptyList()
         val maxSessionId = sets.filter { it.exerciseId == exerciseId }.maxOfOrNull { it.sessionId } ?: return emptyList()
         return sets.filter { it.sessionId == maxSessionId && it.exerciseId == exerciseId }
     }
 }
 
-// Stub repository for testing (LOG-01, LOG-04)
-private class WorkoutSetRepository(val dao: StubWorkoutSetDao) {
-    suspend fun logSet(sessionId: Long, exerciseId: Long, weightKg: Double, reps: Int): Long = TODO()
-
-    suspend fun getPreviousSessionSets(exerciseId: Long): List<WorkoutSet> = TODO()
-}
-
 class WorkoutSetRepositoryTest {
-    private lateinit var fakeDao: FakeWorkoutSetDao
+    private lateinit var fakeDao: FakeWorkoutSetDaoForSet
     private lateinit var repository: WorkoutSetRepository
 
     @Before
     fun setUp() {
-        fakeDao = FakeWorkoutSetDao()
+        fakeDao = FakeWorkoutSetDaoForSet()
         repository = WorkoutSetRepository(fakeDao)
     }
 
