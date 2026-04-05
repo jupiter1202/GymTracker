@@ -175,6 +175,7 @@ class WorkoutPlanRepositoryTest {
         override suspend fun update(plan: WorkoutPlan) {}
         override suspend fun delete(plan: WorkoutPlan) { deleteCalled = true }
         override fun getAllPlans(): Flow<List<WorkoutPlan>> = flowOf(emptyList())
+        override fun getMostRecentlyUsedPlan(): Flow<WorkoutPlan?> = flowOf(null)
     }
 
      private inner class FakePlanExerciseDao : PlanExerciseDao {
