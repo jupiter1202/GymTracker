@@ -13,8 +13,8 @@ GymTracker delivers a free, open-source Android workout tracker by building from
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Project scaffolding, database schema, architecture, and unit system (completed 2026-04-04)
-- [ ] **Phase 2: Exercise Library** - Pre-seeded exercise database with search, filter, and custom exercise creation
-- [ ] **Phase 3: Workout Plans** - Custom workout plans and pre-built program templates
+- [x] **Phase 2: Exercise Library** - Pre-seeded exercise database with search, filter, and custom exercise creation (completed 2026-04-04)
+- [x] **Phase 3: Workout Plans** - Custom workout plans and pre-built program templates (completed 2026-04-05)
 - [ ] **Phase 4: Workout Logging** - Live and post-hoc session logging with rest timer and previous performance
 - [ ] **Phase 5: History and Progress** - Workout history, strength charts, body tracking, and PR detection
 - [ ] **Phase 6: Data Export** - CSV and JSON export for full data ownership
@@ -75,7 +75,7 @@ Plans:
 - [x] 03-05-PLAN.md — PlanDetailScreen: drag-and-drop reorder, swipe-to-delete, exercise picker, target sheet
 - [x] 03-06-PLAN.md — TemplatePreviewScreen: exercise list preview, "Use this program" import flow
 - [x] 03-06-GAP-01-PLAN.md — Fix template exercise matching with fuzzy algorithm and updated template names
-- [ ] 03-07-PLAN.md — Human verification: end-to-end Plans smoke test (7 scenarios)
+- [x] 03-07-PLAN.md — Human verification: end-to-end Plans smoke test (7 scenarios)
 
 ### Phase 4: Workout Logging
 **Goal**: Users can log a complete workout session in real time or after the fact, with rest timer support and visibility into previous performance
@@ -131,8 +131,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-04-04 |
-| 2. Exercise Library | 4/5 | In Progress|  |
-| 3. Workout Plans | 8/8 | In Progress|  |
+| 2. Exercise Library | 5/5 | Complete   | 2026-04-04 |
+| 3. Workout Plans | 11/11 | Complete  | 2026-04-05 |
 | 4. Workout Logging | 0/? | Not started | - |
 | 5. History and Progress | 0/? | Not started | - |
 | 6. Data Export | 0/? | Not started | - |
