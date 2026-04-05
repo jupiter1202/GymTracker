@@ -90,9 +90,9 @@ Plans:
 **Plans**: 7 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Wave 0 test stubs: WorkoutSessionRepositoryTest, WorkoutSetRepositoryTest, WorkoutLoggingViewModelTest
-- [ ] 04-02-PLAN.md — Data layer: WorkoutSessionDao, WorkoutSetDao, WorkoutSessionRepository, WorkoutSetRepository, SettingsRepository rest timer setting
-- [ ] 04-03-PLAN.md — WorkoutLoggingViewModel: session state, elapsed timer, rest timer, previous performance, input guards
+- [x] 04-01-PLAN.md — Wave 0 test stubs: WorkoutSessionRepositoryTest, WorkoutSetRepositoryTest, WorkoutLoggingViewModelTest
+- [x] 04-02-PLAN.md — Data layer: WorkoutSessionDao, WorkoutSetDao, WorkoutSessionRepository, WorkoutSetRepository, SettingsRepository rest timer setting
+- [x] 04-03-PLAN.md — WorkoutLoggingViewModel: session state, elapsed timer, rest timer, previous performance, input guards
 - [ ] 04-04-PLAN.md — ActiveWorkoutScreen: LazyColumn exercise sections, inline set input, sticky rest timer banner, exercise picker
 - [ ] 04-05-PLAN.md — WorkoutSummaryScreen, SettingsScreen rest timer row, VIBRATE permission, timer_beep.ogg
 - [ ] 04-06-PLAN.md — Navigation wiring: routes, crash recovery, Dashboard quick-start, Plans Start button, post-hoc date picker

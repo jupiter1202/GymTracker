@@ -23,6 +23,14 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 // Data classes for UI state
+data class WorkoutSummary(
+    val sessionName: String,
+    val durationMs: Long,
+    val exerciseCount: Int,
+    val totalSets: Int,
+    val totalVolumeKg: Double
+)
+
 data class PendingSetInput(
     val weightDisplay: String,
     val reps: String
@@ -89,6 +97,10 @@ class WorkoutLoggingViewModel(
     // Rest timer state
     private val _restTimerState = MutableStateFlow<RestTimerState>(RestTimerState.Idle)
     val restTimerState: StateFlow<RestTimerState> = _restTimerState.asStateFlow()
+
+    // Workout summary (post-completion)
+    private val _summary = MutableStateFlow<WorkoutSummary?>(null)
+    val summary: StateFlow<WorkoutSummary?> = _summary.asStateFlow()
 
     // Weight unit from settings
     val weightUnit: StateFlow<String> = settingsRepository.weightUnit
@@ -356,6 +368,17 @@ class WorkoutLoggingViewModel(
         
         viewModelScope.launch {
             sessionRepository.finishSession(activeSession)
+            
+            // Compute and set summary
+            val allSets = _exerciseSections.value.flatMap { it.loggedSets }
+            _summary.value = WorkoutSummary(
+                sessionName = activeSession.name,
+                durationMs = System.currentTimeMillis() - activeSession.startedAt,
+                exerciseCount = _exerciseSections.value.size,
+                totalSets = allSets.size,
+                totalVolumeKg = allSets.sumOf { it.weightKg * it.reps }
+            )
+            
             _activeSession.value = null
             _exerciseSections.value = emptyList()
             _elapsedMs.value = 0L
