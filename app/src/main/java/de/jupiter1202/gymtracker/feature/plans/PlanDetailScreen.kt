@@ -2,9 +2,6 @@ package de.jupiter1202.gymtracker.feature.plans
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -15,15 +12,11 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.input.pointer.pointerHoverIcon
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,6 +27,7 @@ import de.jupiter1202.gymtracker.core.database.entities.WorkoutPlan
 import de.jupiter1202.gymtracker.core.constants.MUSCLE_GROUPS
 import de.jupiter1202.gymtracker.feature.exercises.ExerciseViewModel
 import org.koin.androidx.compose.koinViewModel
+import sh.calvin.reorderable.ReorderableCollectionItemScope
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 
@@ -189,6 +183,7 @@ private fun PlanExerciseList(
             ) { isDragging ->
                 ExerciseRowWithDelete(
                     item = item,
+                    reorderableScope = this,
                     onExerciseClick = { onExerciseClick(item) },
                     onDeleteExercise = { onDeleteExercise(item) },
                     isDragging = isDragging
@@ -212,6 +207,7 @@ private fun PlanExerciseList(
 @Composable
 private fun ExerciseRowWithDelete(
     item: PlanExerciseWithExercise,
+    reorderableScope: ReorderableCollectionItemScope,
     onExerciseClick: () -> Unit,
     onDeleteExercise: () -> Unit,
     isDragging: Boolean
@@ -248,33 +244,25 @@ private fun ExerciseRowWithDelete(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         // Drag handle — long-press to drag
-         Surface(
-             modifier = Modifier
-                 .size(40.dp)
-                 .pointerHoverIcon(PointerIcon.Hand, overrideDescendants = true)
-                 .pointerInput(Unit) {
-                     detectTapGestures(
-                         onPress = {
-                             android.util.Log.d("PlanDetailScreen", "Drag handle pressed")
-                         },
-                         onLongPress = {
-                             android.util.Log.d("PlanDetailScreen", "Drag handle long pressed")
-                         }
-                     )
-                 },
-             color = Color.Transparent
-         ) {
-             Box(
-                 contentAlignment = Alignment.Center,
-                 modifier = Modifier.fillMaxSize()
-             ) {
-                 Text(
-                     "≡",
-                     style = MaterialTheme.typography.headlineSmall,
-                     color = MaterialTheme.colorScheme.onSurfaceVariant
-                 )
-             }
-         }
+        with(reorderableScope) {
+            Surface(
+                modifier = Modifier
+                    .size(40.dp)
+                    .longPressDraggableHandle(),
+                color = Color.Transparent
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text(
+                        "≡",
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        }
         
         // Exercise info
         Column(
