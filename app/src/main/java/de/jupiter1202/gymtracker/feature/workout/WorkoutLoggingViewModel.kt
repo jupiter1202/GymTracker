@@ -212,37 +212,41 @@ class WorkoutLoggingViewModel(
                 if (session != null) {
                     _activeSession.value = session
                     
-                    // Load existing exercise sections with logged sets
-                    setRepository.getSetsForSession(sessionId).collect { sets ->
-                        // Group sets by exerciseId
-                        val exerciseIds = sets.map { it.exerciseId }.distinct()
-                        val exercises = exerciseIds.mapNotNull { id ->
-                            exerciseRepository.getExerciseById(id)
-                        }
-                        
-                        // Create ExerciseSection for each exercise with its logged sets
-                        val sections = exercises.map { exercise ->
-                            val exerciseSets = sets.filter { it.exerciseId == exercise.id }
-                                .mapIndexed { index, set ->
-                                    LoggedSet(
-                                        id = set.id,
-                                        setNumber = index + 1,
-                                        weightKg = set.weightKg,
-                                        reps = set.reps
-                                    )
-                                }
+                    // GUARD: Only reload exercises if we don't have any (crash recovery scenario)
+                    // Fresh starts already have exercises from startSessionAndGetId
+                    if (_exerciseSections.value.isEmpty()) {
+                        // Load existing exercise sections with logged sets
+                        setRepository.getSetsForSession(sessionId).collect { sets ->
+                            // Group sets by exerciseId
+                            val exerciseIds = sets.map { it.exerciseId }.distinct()
+                            val exercises = exerciseIds.mapNotNull { id ->
+                                exerciseRepository.getExerciseById(id)
+                            }
                             
-                            val previousSets = setRepository.getPreviousSessionSets(exercise.id)
-                            val previousPerformance = formatPreviousPerformance(previousSets, weightUnit.value)
-                            
-                            ExerciseSection(
-                                exercise = exercise,
-                                loggedSets = exerciseSets,
-                                pendingInput = PendingSetInput("", ""),
-                                previousPerformance = previousPerformance
-                            )
+                            // Create ExerciseSection for each exercise with its logged sets
+                            val sections = exercises.map { exercise ->
+                                val exerciseSets = sets.filter { it.exerciseId == exercise.id }
+                                    .mapIndexed { index, set ->
+                                        LoggedSet(
+                                            id = set.id,
+                                            setNumber = index + 1,
+                                            weightKg = set.weightKg,
+                                            reps = set.reps
+                                        )
+                                    }
+                                
+                                val previousSets = setRepository.getPreviousSessionSets(exercise.id)
+                                val previousPerformance = formatPreviousPerformance(previousSets, weightUnit.value)
+                                
+                                ExerciseSection(
+                                    exercise = exercise,
+                                    loggedSets = exerciseSets,
+                                    pendingInput = PendingSetInput("", ""),
+                                    previousPerformance = previousPerformance
+                                )
+                            }
+                            _exerciseSections.value = sections
                         }
-                        _exerciseSections.value = sections
                     }
                     
                     startElapsedTimer(session.startedAt)

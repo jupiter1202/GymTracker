@@ -37,7 +37,11 @@ fun ActiveWorkoutScreen(
 ) {
     // Resume session on first composition
     LaunchedEffect(sessionId) {
-        viewModel.resumeSession(sessionId)
+        // Only resume from database if activeSession is null (crash recovery)
+        // Fresh starts already have exercises populated by startSessionAndGetId
+        if (viewModel.activeSession.value == null) {
+            viewModel.resumeSession(sessionId)
+        }
     }
 
     // State management
