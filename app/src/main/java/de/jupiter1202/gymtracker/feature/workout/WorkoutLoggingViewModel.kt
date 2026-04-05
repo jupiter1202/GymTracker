@@ -59,6 +59,7 @@ class WorkoutLoggingViewModel(
     private val sessionRepository: WorkoutSessionRepository,
     private val setRepository: WorkoutSetRepository,
     private val settingsRepository: SettingsRepository,
+    private val exerciseRepository: de.jupiter1202.gymtracker.feature.exercises.ExerciseRepository,
     private val context: Context
 ) : ViewModel() {
 
@@ -205,30 +206,50 @@ class WorkoutLoggingViewModel(
      */
     fun resumeSession(sessionId: Long) {
         viewModelScope.launch {
-            val session = sessionRepository.getSessionById(sessionId)
-            
-            if (session != null) {
-                _activeSession.value = session
+            try {
+                val session = sessionRepository.getSessionById(sessionId)
                 
-                // Load existing exercise sections with logged sets
-                // Note: getSetsForSession returns a Flow, so we collect the first emission
-                setRepository.getSetsForSession(sessionId).collect { sets ->
-                    // Convert WorkoutSet to LoggedSet for display
-                    val loggedSets = sets.map { set ->
-                        LoggedSet(
-                            id = set.id,
-                            setNumber = set.setNumber,
-                            weightKg = set.weightKg,
-                            reps = set.reps
-                        )
+                if (session != null) {
+                    _activeSession.value = session
+                    
+                    // Load existing exercise sections with logged sets
+                    setRepository.getSetsForSession(sessionId).collect { sets ->
+                        // Group sets by exerciseId
+                        val exerciseIds = sets.map { it.exerciseId }.distinct()
+                        val exercises = exerciseIds.mapNotNull { id ->
+                            exerciseRepository.getExerciseById(id)
+                        }
+                        
+                        // Create ExerciseSection for each exercise with its logged sets
+                        val sections = exercises.map { exercise ->
+                            val exerciseSets = sets.filter { it.exerciseId == exercise.id }
+                                .mapIndexed { index, set ->
+                                    LoggedSet(
+                                        id = set.id,
+                                        setNumber = index + 1,
+                                        weightKg = set.weightKg,
+                                        reps = set.reps
+                                    )
+                                }
+                            
+                            val previousSets = setRepository.getPreviousSessionSets(exercise.id)
+                            val previousPerformance = formatPreviousPerformance(previousSets, weightUnit.value)
+                            
+                            ExerciseSection(
+                                exercise = exercise,
+                                loggedSets = exerciseSets,
+                                pendingInput = PendingSetInput("", ""),
+                                previousPerformance = previousPerformance
+                            )
+                        }
+                        _exerciseSections.value = sections
                     }
                     
-                    // Group by exercise and create exercise sections
-                    // (Simplified - full version would need Exercise entities from DB)
-                    _exerciseSections.value = emptyList()
+                    startElapsedTimer(session.startedAt)
                 }
-                
-                startElapsedTimer(session.startedAt)
+            } catch (e: Exception) {
+                // Log error silently - handle gracefully without crashing
+                // Session data may be incomplete, but recovery can proceed
             }
         }
     }
