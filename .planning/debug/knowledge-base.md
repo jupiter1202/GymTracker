@@ -4,6 +4,16 @@ Resolved debug sessions. Used by `gsd-debugger` to surface known-pattern hypothe
 
 ---
 
+## elapsed-timer-stuck — Elapsed timer stuck at 0:00:00 - delay placed after emit instead of before
+
+- **Date:** 2026-04-05
+- **Error patterns:** elapsed, timer, 0:00:00, frozen, stuck, delay, emit, coroutine, StateFlow, workout duration, inactive
+- **Root cause:** In startElapsedTimer(), the delay(1_000L) was placed AFTER the emit(), causing a 1-second gap after each update. Timeline: emit at t=0, delay 1s, emit at t=1s, delay 1s, etc. This created frozen periods where the UI saw no updates for 1+ seconds, making the timer appear stuck at 0:00:00.
+- **Fix:** Moved delay to BEGINNING of the loop and added initial emit before the loop. Now: emit immediately at t=0, delay 1s, emit at t=1s, repeat. Ensures smooth 1-second increments with no gaps.
+- **Files changed:** app/src/main/java/de/jupiter1202/gymtracker/feature/workout/WorkoutLoggingViewModel.kt
+
+---
+
 ## plan-detail-drag-reorder-broken — Drag handle missing longPressDraggableHandle modifier from reorderable library
 - **Date:** 2026-04-05
 - **Error patterns:** drag, reorder, drag-and-drop, long-press, gesture, ReorderableItem, sh.calvin.reorderable, drag handle, pointerInput, detectTapGestures
