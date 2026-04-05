@@ -75,5 +75,7 @@ class ExerciseRepositoryTest {
         }
 
         override suspend fun countUsagesInSessions(exerciseId: Long): Int = usageCount
+
+        override suspend fun getExerciseById(id: Long): Exercise? = null
     }
 }
