@@ -498,10 +498,15 @@ class WorkoutLoggingViewModel(
     private fun startElapsedTimer(startedAt: Long) {
         elapsedTimerJob?.cancel()
         elapsedTimerJob = viewModelScope.launch {
+            // Emit initial value immediately
+            val elapsed = System.currentTimeMillis() - startedAt
+            _elapsedMs.emit(elapsed)
+            
+            // Then loop with delay first to ensure updates every 1 second
             while (isActive) {
+                delay(1_000L)
                 val elapsed = System.currentTimeMillis() - startedAt
                 _elapsedMs.emit(elapsed)
-                delay(1_000L)
             }
         }
     }
