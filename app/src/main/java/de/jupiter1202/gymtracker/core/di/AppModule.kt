@@ -41,5 +41,5 @@ val appModule = module {
     viewModel { ExerciseViewModel(get()) }
     viewModel { SettingsViewModel(get()) }
     viewModel { WorkoutPlanViewModel(get()) }
-    viewModel { WorkoutLoggingViewModel(get(), get(), get(), get(), androidContext()) }
+    single { WorkoutLoggingViewModel(get(), get(), get(), get(), androidContext()) }
 }

@@ -103,7 +103,7 @@ Plans:
 - [ ] 04-11-PLAN.md — Gap closure verification: Re-verify all gaps fixed
 - [x] 04-12-PLAN.md — Root cause fix: ActiveWorkoutScreen activeSession null check + resumeSession guard (Flow race condition)
 - [x] 04-13-PLAN.md — Gap verification: Tests confirming all 3 gaps fixed
-- [ ] 04-14-PLAN.md — UI additions: DoneButton per exercise + markExerciseDone() auto-timer
+- [x] 04-14-PLAN.md — UI additions: DoneButton per exercise + markExerciseDone() auto-timer
 - [ ] 04-15-PLAN.md — Final human verification: All gaps + Done button functionality
 
 ### Phase 5: History and Progress
