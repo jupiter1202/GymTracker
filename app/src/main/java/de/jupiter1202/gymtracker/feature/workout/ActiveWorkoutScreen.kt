@@ -128,6 +128,13 @@ fun ActiveWorkoutScreen(
                     )
                 }
 
+                // "Mark Exercise Done" button - triggers rest timer without logging a set
+                item(key = "done_${section.exercise.id}") {
+                    DoneButton(
+                        onClick = { viewModel.markExerciseDone(section.exercise.id) }
+                    )
+                }
+
                 // "+ Add set" button
                 item(key = "addset_${section.exercise.id}") {
                     TextButton(
@@ -366,6 +373,21 @@ private fun RestTimerBanner(
                 Text("+30s", color = MaterialTheme.colorScheme.onPrimary)
             }
         }
+    }
+}
+
+@Composable
+private fun DoneButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp)
+    ) {
+        Text("Mark Exercise Done")
     }
 }
 

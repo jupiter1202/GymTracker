@@ -463,6 +463,20 @@ class WorkoutLoggingViewModel(
     }
 
     /**
+     * Mark an exercise as done and start rest timer
+     * Called when user taps "Done" button without logging another set
+     */
+    fun markExerciseDone(exerciseId: Long) {
+        viewModelScope.launch {
+            // Get rest timer duration from settings
+            val restTimerDuration = settingsRepository.restTimerSeconds
+            restTimerDuration.collect { duration ->
+                startRestTimer(duration)
+            }
+        }
+    }
+
+    /**
      * Discard the active session
      */
     fun discardSession() {
