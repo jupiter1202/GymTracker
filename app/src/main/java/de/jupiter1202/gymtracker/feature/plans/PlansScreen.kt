@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -43,6 +44,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,7 +53,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.jupiter1202.gymtracker.core.database.entities.WorkoutPlan
+import de.jupiter1202.gymtracker.feature.workout.WorkoutLoggingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -61,14 +65,20 @@ import java.util.Locale
 @Composable
 fun PlansScreen(
     onPlanClick: (Long) -> Unit,
-    onTemplateClick: (String) -> Unit
+    onTemplateClick: (String) -> Unit,
+    onStartPlan: (Long) -> Unit = {}
 ) {
     val viewModel: WorkoutPlanViewModel = koinViewModel()
+    val workoutViewModel: WorkoutLoggingViewModel = koinViewModel()
     val plans by viewModel.plans.collectAsStateWithLifecycle()
     val templates by viewModel.templates.collectAsStateWithLifecycle()
+    val activeSession by workoutViewModel.activeSession.collectAsStateWithLifecycle()
 
     var showCreateSheet by remember { mutableStateOf(false) }
     var planToEdit by remember { mutableStateOf<WorkoutPlan?>(null) }
+    var showActiveSessionDialog by remember { mutableStateOf(false) }
+    
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         floatingActionButton = {
@@ -112,7 +122,25 @@ fun PlansScreen(
                         plan = plan,
                         onClick = { onPlanClick(plan.id) },
                         onEditClick = { planToEdit = plan },
-                        onDeleteClick = { viewModel.deletePlan(plan) }
+                        onDeleteClick = { viewModel.deletePlan(plan) },
+                        onStartClick = {
+                            if (activeSession != null) {
+                                showActiveSessionDialog = true
+                            } else {
+                                scope.launch {
+                                    try {
+                                        val sessionId = workoutViewModel.startSessionAndGetId(
+                                            name = plan.name,
+                                            planId = plan.id,
+                                            exercises = emptyList()
+                                        )
+                                        onStartPlan(sessionId)
+                                    } catch (e: Exception) {
+                                        // Handle error silently for now
+                                    }
+                                }
+                            }
+                        }
                     )
                 }
             }
@@ -176,6 +204,37 @@ fun PlansScreen(
                 )
             }
         }
+
+        // Active session alert dialog
+        if (showActiveSessionDialog) {
+            AlertDialog(
+                onDismissRequest = { showActiveSessionDialog = false },
+                title = { Text("Active Workout") },
+                text = { Text("You have an active workout. Finish it first or discard it.") },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showActiveSessionDialog = false
+                            if (activeSession != null) {
+                                onStartPlan(activeSession!!.id)
+                            }
+                        }
+                    ) {
+                        Text("Resume")
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            showActiveSessionDialog = false
+                            workoutViewModel.discardSession()
+                        }
+                    ) {
+                        Text("Discard")
+                    }
+                }
+            )
+        }
     }
 }
 
@@ -185,53 +244,80 @@ fun PlanCard(
     plan: WorkoutPlan,
     onClick: () -> Unit,
     onEditClick: () -> Unit,
-    onDeleteClick: () -> Unit
+    onDeleteClick: () -> Unit,
+    onStartClick: () -> Unit = {}
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
     ElevatedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = { showMenu = true }
-            )
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Box(modifier = Modifier.padding(16.dp)) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    plan.name,
-                    style = MaterialTheme.typography.titleSmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    "0 exercises · ${formatDate(plan.createdAt)}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 4.dp)
-                )
-                // TODO(03-05): load exercise count via DAO; show muscle group chips when exercises available
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        plan.name,
+                        style = MaterialTheme.typography.titleSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        "0 exercises · ${formatDate(plan.createdAt)}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
+
+                Box(modifier = Modifier.width(100.dp)) {
+                    OutlinedButton(
+                        onClick = {
+                            onStartClick()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Start", maxLines = 1)
+                    }
+
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Edit plan") },
+                            onClick = {
+                                showMenu = false
+                                onEditClick()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Delete plan") },
+                            onClick = {
+                                showMenu = false
+                                onDeleteClick()
+                            }
+                        )
+                    }
+                }
             }
 
-            DropdownMenu(
-                expanded = showMenu,
-                onDismissRequest = { showMenu = false }
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedButton(
+                onClick = { onClick() },
+                modifier = Modifier.fillMaxWidth()
             ) {
-                DropdownMenuItem(
-                    text = { Text("Edit plan") },
-                    onClick = {
-                        showMenu = false
-                        onEditClick()
-                    }
-                )
-                DropdownMenuItem(
-                    text = { Text("Delete plan") },
-                    onClick = {
-                        showMenu = false
-                        onDeleteClick()
-                    }
-                )
+                Text("View Details")
+            }
+
+            TextButton(
+                onClick = { showMenu = true },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("More options")
             }
         }
     }
