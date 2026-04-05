@@ -11,6 +11,8 @@ import de.jupiter1202.gymtracker.core.database.entities.PlanExercise
 import de.jupiter1202.gymtracker.core.database.entities.WorkoutPlan
 import de.jupiter1202.gymtracker.core.database.entities.WorkoutSession
 import de.jupiter1202.gymtracker.core.database.entities.WorkoutSet
+import de.jupiter1202.gymtracker.feature.workout.WorkoutSessionDao
+import de.jupiter1202.gymtracker.feature.workout.WorkoutSetDao
 
 @Database(
     entities = [
@@ -28,4 +30,6 @@ abstract class GymTrackerDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao
     abstract fun workoutPlanDao(): WorkoutPlanDao
     abstract fun planExerciseDao(): PlanExerciseDao
+    abstract fun workoutSessionDao(): WorkoutSessionDao
+    abstract fun workoutSetDao(): WorkoutSetDao
 }
