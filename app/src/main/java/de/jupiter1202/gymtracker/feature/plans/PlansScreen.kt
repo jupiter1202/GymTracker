@@ -55,8 +55,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.jupiter1202.gymtracker.core.database.entities.WorkoutPlan
 import de.jupiter1202.gymtracker.feature.workout.WorkoutLoggingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -70,6 +72,7 @@ fun PlansScreen(
 ) {
     val viewModel: WorkoutPlanViewModel = koinViewModel()
     val workoutViewModel: WorkoutLoggingViewModel = koinViewModel()
+    val planRepository: WorkoutPlanRepository = koinInject()
     val plans by viewModel.plans.collectAsStateWithLifecycle()
     val templates by viewModel.templates.collectAsStateWithLifecycle()
     val activeSession by workoutViewModel.activeSession.collectAsStateWithLifecycle()
@@ -129,14 +132,16 @@ fun PlansScreen(
                             } else {
                                 scope.launch {
                                     try {
+                                        val planExercises = planRepository.getPlanExercises(plan.id).first()
+                                            .map { it.exercise }  // Extract Exercise from PlanExerciseWithExercise
                                         val sessionId = workoutViewModel.startSessionAndGetId(
                                             name = plan.name,
                                             planId = plan.id,
-                                            exercises = emptyList()
+                                            exercises = planExercises  // Pass actual exercises
                                         )
                                         onStartPlan(sessionId)
                                     } catch (e: Exception) {
-                                        // Handle error silently for now
+                                        // Error fetching plan exercises - start without them
                                     }
                                 }
                             }
